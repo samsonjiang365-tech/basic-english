@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础英语 Basic English - 每日3分钟学习</title>
+    <style>
+        :root {
+            --primary: #4A90D9;
+            --primary-dark: #357ABD;
+            --primary-light: #E8F4FD;
+            --accent: #FF6B6B;
+            --success: #51CF66;
+            --warning: #FFD43B;
+            --bg: #F5F7FA;
+            --card: #FFFFFF;
+            --text: #2D3436;
+            --text-secondary: #636E72;
+            --border: #DFE6E9;
+            --shadow: rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header ===== */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 16px 20px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(74,144,217,0.3);
+        }
+        .app-header h1 {
+            font-size: 20px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .app-header h1 .icon { font-size: 24px; }
+        .header-stats {
+            display: flex; gap: 16px; margin-top: 8px;
+            font-size: 13px; opacity: 0.9;
+        }
+        .header-stat { display: flex; align-items: center; gap: 4px; }
+
+        /* ===== Navigation Tabs ===== */
+        .nav-tabs {
+            display: flex;
+            position: fixed;
+            top: 80px; left: 0; right: 0;
+            z-index: 999;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 0 10px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .nav-tab {
+            flex-shrink: 0;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+        .nav-tab:hover { color: var(--primary); }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            padding-top: 144px;
+            padding-bottom: 80px;
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page { display: none; padding: 16px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Cards ===== */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: 0 2px 12px var(--shadow);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 17px; font-weight: 700;
+            margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* ===== Today's Learning (Home Page) ===== */
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            right: -20px; top: -20px;
+            width: 120px; height: 120px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .welcome-banner h2 { font-size: 22px; margin-bottom: 6px; }
+        .welcome-banner p { font-size: 14px; opacity: 0.9; }
+        .welcome-banner .streak-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(255,255,255,0.2); padding: 4px 12px;
+            border-radius: 20px; font-size: 13px; margin-top: 10px;
+        }
+
+        .daily-progress-ring {
+            width: 140px; height: 140px;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+        .progress-ring-svg { transform: rotate(-90deg); }
+        .progress-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+        .progress-ring-fill {
+            fill: none; stroke: var(--primary); stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .progress-percent { font-size: 28px; font-weight: 700; color: var(--primary); }
+        .progress-label { font-size: 12px; color: var(--text-secondary); }
+
+        .task-list { list-style: none; }
+        .task-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .task-item:last-child { border-bottom: none; }
+        .task-item:hover { background: var(--primary-light); margin: 0 -10px; padding-left: 10px; padding-right: 10px; border-radius: 8px; }
+        .task-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
+        .task-icon.words { background: #E3F2FD; }
+        .task-icon.grammar { background: #FFF3E0; }
+        .task-icon.quiz { background: #E8F5E9; }
+        .task-info { flex: 1; }
+        .task-name { font-size: 15px; font-weight: 600; }
+        .task-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+        .task-status {
+            width: 26px; height: 26px; border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 14px;
+        }
+        .task-status.done {
+            background: var(--success); border-color: var(--success);
+            color: white;
+        }
+
+        .start-btn {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; border-radius: var(--radius);
+            font-size: 17px; font-weight: 700;
+            cursor: pointer; margin-top: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74,144,217,0.4); }
+        .start-btn:active { transform: translateY(0); }
+
+        /* ===== Word Learning ===== */
+        .word-card-display {
+            text-align: center; padding: 30px 16px;
+        }
+        .word-main { font-size: 42px; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
+        .word-phonetic { font-size: 16px; color: var(--text-secondary); margin-bottom: 12px; }
+        .word-pos { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 2px 10px; border-radius: 4px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+        .word-meaning { font-size: 18px; margin-bottom: 16px; line-height: 1.6; }
+        .word-example {
+            background: var(--bg); padding: 14px; border-radius: 8px;
+            font-style: italic; font-size: 14px; color: var(--text-secondary);
+            border-left: 3px solid var(--primary);
+            text-align: left; margin-bottom: 16px;
+        }
+        .word-example strong { color: var(--primary); font-style: normal; }
+
+        .word-nav {
+            display: flex; justify-content: space-between; gap: 12px;
+        }
+        .word-nav-btn {
+            flex: 1; padding: 12px; border: 1px solid var(--border);
+            border-radius: 8px; background: var(--card);
+            font-size: 14px; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .word-nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .word-nav-btn.primary {
+            background: var(--primary); color: white; border-color: var(--primary);
+        }
+        .word-nav-btn.primary:hover { background: var(--primary-dark); }
+
+        .word-progress-bar {
+            height: 4px; background: var(--border); border-radius: 2px;
+            margin-top: 20px; overflow: hidden;
+        }
+        .word-progress-fill {
+            height: 100%; background: var(--primary);
+            border-radius: 2px; transition: width 0.3s ease;
+        }
+
+        /* ===== Grammar Rules ===== */
+        .grammar-rule-card {
+            border-left: 4px solid var(--warning);
+            background: #FFFBEB; padding: 16px;
+            border-radius: 0 8px 8px 0; margin-bottom: 12px;
+        }
+        .grammar-rule-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; background: var(--warning);
+            border-radius: 50%; font-size: 13px; font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .grammar-rule-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .grammar-rule-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+        .grammar-example {
+            background: white; padding: 10px 14px; border-radius: 6px;
+            margin-top: 8px; font-size: 13px;
+        }
+        .grammar-example .eg-label { color: var(--warning); font-weight: 600; font-size: 12px; }
+
+        /* ===== Quiz ===== */
+        .quiz-progress {
+            display: flex; gap: 6px; margin-bottom: 20px;
+            justify-content: center;
+        }
+        .quiz-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border); transition: all 0.3s;
+        }
+        .quiz-dot.active { background: var(--primary); transform: scale(1.3); }
+        .quiz-dot.correct { background: var(--success); }
+        .quiz-dot.wrong { background: var(--accent); }
+
+        .quiz-question { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; }
+        .quiz-word-hint { font-size: 32px; color: var(--primary); text-align: center; margin-bottom: 20px; }
+
+        .quiz-options { list-style: none; }
+        .quiz-option {
+            padding: 14px 18px; border: 2px solid var(--border);
+            border-radius: 10px; margin-bottom: 10px;
+            font-size: 15px; cursor: pointer;
+            transition: all 0.2s; text-align: center;
+        }
+        .quiz-option:hover { border-color: var(--primary); background: var(--primary-light); }
+        .quiz-option.selected { border-color: var(--primary); background: var(--primary-light); }
+        .quiz-option.correct { border-color: var(--success); background: #E8F9EF; }
+        .quiz-option.wrong { border-color: var(--accent); background: #FFF0F0; }
+
+        .quiz-result {
+            text-align: center; padding: 30px 16px;
+        }
+        .result-score { font-size: 56px; font-weight: 800; }
+        .result-score.perfect { color: var(--success); }
+        .result-score.good { color: var(--primary); }
+        .result-score.poor { color: var(--accent); }
+        .result-msg { font-size: 16px; color: var(--text-secondary); margin: 10px 0 20px; }
+
+        /* ===== Check-in / Stats ===== */
+        .checkin-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px; margin-bottom: 16px;
+        }
+        .calendar-day {
+            aspect-ratio: 1; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 600;
+            background: var(--bg); color: var(--text-secondary);
+        }
+        .calendar-day.header { background: transparent; color: var(--text); font-size: 11px; }
+        .calendar-day.checked { background: var(--success); color: white; }
+        .calendar-day.today { border: 2px solid var(--primary); }
+        .calendar-day.empty { background: transparent; }
+
+        .stat-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+        }
+        .stat-box {
+            background: var(--bg); border-radius: 10px;
+            padding: 16px; text-align: center;
+        }
+        .stat-value { font-size: 28px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+        /* ===== Achievements ===== */
+        .achievement-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+        }
+        .achievement-item {
+            text-align: center; padding: 16px 8px;
+            border-radius: 10px; background: var(--bg);
+            transition: transform 0.2s;
+        }
+        .achievement-item.unlocked { background: linear-gradient(135deg, #FFF9E6, #FFE8CC); }
+        .achievement-item.locked { opacity: 0.45; }
+        .achievement-icon { font-size: 36px; margin-bottom: 6px; }
+        .achievement-name { font-size: 12px; font-weight: 600; }
+        .achievement-desc { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+        /* ===== Word Book ===== */
+        .search-box {
+            width: 100%; padding: 12px 16px;
+            border: 2px solid var(--border); border-radius: 10px;
+            font-size: 15px; outline: none; margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus { border-color: var(--primary); }
+
+        .filter-tabs {
+            display: flex; gap: 8px; margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 13px; cursor: pointer;
+            background: var(--bg); border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .filter-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .word-book-list { list-style: none; max-height: 500px; overflow-y: auto; }
+        .word-book-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px; border-bottom: 1px solid var(--border);
+            cursor: pointer; transition: background 0.2s;
+        }
+        .word-book-item:hover { background: var(--primary-light); border-radius: 8px; }
+        .wb-word { font-size: 16px; font-weight: 700; min-width: 70px; }
+        .wb-pos { font-size: 11px; color: white; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+        .wb-pos.noun { background: #4A90D9; }
+        .wb-pos.verb { background: #51CF66; }
+        .wb-pos.adj { background: #FF6B6B; }
+        .wb-pos.adv { background: #FFD43B; color: #333; }
+        .wb-pos.pron { background: #9B59B6; }
+        .wb-pos.prep { background: #E67E22; }
+        .wb-pos.conj { background: #1ABC9C; }
+        .wb-pos.art { background: #95A5A6; }
+        .wb-meaning { font-size: 14px; color: var(--text-secondary); flex: 1; }
+        .wb-mastered {
+            font-size: 18px; flex-shrink: 0;
+        }
+
+        /* ===== Bottom Nav ===== */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--card); border-top: 1px solid var(--border);
+            display: flex; z-index: 1000;
+            padding: 6px 0 env(safe-area-inset-bottom, 8px);
+        }
+        .bottom-nav-item {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; padding: 6px 0;
+            cursor: pointer; color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+        .bottom-nav-item.active { color: var(--primary); }
+        .bottom-nav-item .b-icon { font-size: 22px; }
+        .bottom-nav-item .b-label { font-size: 10px; margin-top: 2px; }
+
+        /* ===== Modal / Toast ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); z-index: 2000;
+            display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: var(--card); border-radius: 16px;
+            padding: 28px 24px; max-width: 340px; width: 100%;
+            text-align: center; animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-icon { font-size: 48px; margin-bottom: 12px; }
+        .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .modal-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
+        .modal-btn {
+            padding: 12px 32px; border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            background: var(--primary); color: white;
+        }
+
+        .toast {
+            position: fixed; top: 90px; left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--text); color: white;
+            padding: 10px 24px; border-radius: 20px;
+            font-size: 14px; z-index: 3000;
+            opacity: 0; transition: all 0.3s;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ===== Confetti ===== */
+        .confetti-container {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none; z-index: 2500; overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute; width: 10px; height: 10px;
+            animation: confettiFall 2s ease-out forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 480px) {
+            .app-header h1 { font-size: 17px; }
+            .header-stats { font-size: 12px; gap: 10px; }
+            .welcome-banner h2 { font-size: 19px; }
+            .word-main { font-size: 34px; }
+            .achievement-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .achievement-item { padding: 12px 4px; }
+            .achievement-icon { font-size: 28px; }
+        }
+
+        @media (min-width: 601px) {
+            .main-content { padding-top: 130px; max-width: 540px; }
+            .nav-tabs { top: 72px; }
+        }
+
+        @media print {
+            .app-header, .nav-tabs, .bottom-nav { display: none !important; }
+            .main-content { padding-top: 0; }
+            .page { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="app-header">
+    <h1><span class="icon">📖</span> 基础英语 Basic English</h1>
+    <div class="header-stats">
+        <span class="header-stat">🔥 <strong id="headerStreak">0</strong>天连续</span>
+        <span class="header-stat">📚 已学 <strong id="headerWords">0</strong> 词</span>
+        <span class="header-stat">⏱️ 今日 <strong id="headerTodayMins">0</strong> 分钟</span>
+    </div>
+</header>
+
+<!-- Tab Navigation -->
+<nav class="nav-tabs">
+    <div class="nav-tab active" data-page="home">今日学习</div>
+    <div class="nav-tab" data-page="vocabulary">850词汇</div>
+    <div class="nav-tab" data-page="grammar">语法规则</div>
+    <div class="nav-tab" data-page="stats">学习统计</div>
+    <div class="nav-tab" data-page="achievements">成就</div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+
+    <!-- ========== HOME PAGE ========== -->
+    <div class="page active" id="page-home">
+        <div class="welcome-banner">
+            <h2 id="greetingText">早上好！</h2>
+            <p>每天3分钟，掌握基础英语850词</p>
+            <div class="streak-badge">🔥 已连续学习 <strong id="streakDays">0</strong> 天</div>
+        </div>
+
+        <div class="card">
+            <div class="daily-progress-ring">
+                <svg class="progress-ring-svg" width="140" height="140" viewBox="0 0 140 140">
+                    <circle class="progress-ring-bg" cx="70" cy="70" r="62"/>
+                    <circle class="progress-ring-fill" id="dailyProgressRing" cx="70" cy="70" r="62"
+                        stroke-dasharray="389.56" stroke-dashoffset="389.56"/>
+                </svg>
+                <div class="progress-text">
+                    <div class="progress-percent" id="dailyPercent">0%</div>
+                    <div class="progress-label">今日进度</div>
+                </div>
+            </div>
+
+            <ul class="task-list" id="taskList">
+                <li class="task-item" onclick="startWordLearning()">
+                    <div class="task-icon words">📝</div>
+                    <div class="task-info">
+                        <div class="task-name">单词学习</div>
+                        <div class="task-desc">学习今日新单词 · 预计1分钟</div>
+                    </div>
+                    <div class="task-status" id="taskWords">○</div>
+                </li>
+                <li class="task-item" onclick="showGrammarTip()">
+                    <div class="task-icon grammar">📐</div>
+                    <div class="task-info">
+                        <div class="task-name">语法小贴士</div>
+                        <div class="task-desc">每日一条语法规则 · 预计30秒</div>
+                    </div>
+                    <div class="task-status" id="taskGrammar">○</div>
+                </li>
+                <li class="task-item" onclick="startQuiz()">
+                    <div class="task-icon quiz">✅</div>
+                    <div class="task-info">
+                        <div class="task-name">迷你测试</div>
+                        <div class="task-desc">检验学习成果 · 预计1分钟</div>
+                    </div>
+                    <div class="task-status" id="taskQuiz">○</div>
+                </li>
+            </ul>
+
+            <button class="start-btn" onclick="startDailyLearning()">▶ 开始今日学习</button>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="card">
+            <div class="card-title">📊 本周概览</div>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="weekWords">0</div>
+                    <div class="stat-label">本周新学单词</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="weekAccuracy">0%</div>
+                    <div class="stat-label">测试正确率</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalMinutes">0</div>
+                    <div class="stat-label">累计学习(分钟)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="masteredCount">0</div>
+                    <div class="stat-label">已掌握单词</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== VOCABULARY PAGE ========== -->
+    <div class="page" id="page-vocabulary">
+        <div class="card">
+            <input type="text" class="search-box" id="wordSearch" placeholder="🔍 搜索单词..." oninput="filterWordBook()">
+            <div class="filter-tabs" id="posFilters">
+                <div class="filter-tab active" data-pos="all">全部</div>
+                <div class="filter-tab" data-pos="noun">名词</div>
+                <div class="filter-tab" data-pos="verb">动词</div>
+                <div class="filter-tab" data-pos="adj">形容词</div>
+                <div class="filter-tab" data-pos="adv">副词</div>
+                <div class="filter-tab" data-pos="pron">代词</div>
+                <div class="filter-tab" data-pos="prep">介词</div>
+                <div class="filter-tab" data-pos="conj">连词</div>
+                <div class="filter-tab" data-pos="art">冠词</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);margin-bottom:10px;">
+                <span>共 <strong id="totalVocabCount">850</strong> 个核心词汇</span>
+                <span>已掌握 <strong id="masteredInBook">0</strong></span>
+            </div>
+            <ul class="word-book-list" id="wordBookList"></ul>
+        </div>
+    </div>
+
+    <!-- ========== GRAMMAR PAGE ========== -->
+    <div class="page" id="page-grammar">
+        <div class="card">
+            <div class="card-title">📐 基础英语 18 条语法规则</div>
+            <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">
+                C.K. Ogden 于1930年创立的基础英语系统，仅用850个核心词汇+18条简单语法规则，即可表达日常所需的大部分内容。
+            </p>
+            <div id="grammarRulesList"></div>
+        </div>
+    </div>
+
+    <!-- ========== STATS PAGE ========== -->
+    <div class="page" id="page-stats">
+        <div class="card">
+            <div class="card-title">📅 打卡日历</div>
+            <div class="checkin-calendar" id="checkinCalendar"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📈 学习数据统计</div>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="statTotalDays">0</div>
+                    <div class="stat-label">累计学习天数</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statTotalWords">0</div>
+                    <div class="stat-label">累计学习单词</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statTotalQuizzes">0</div>
+                    <div class="stat-label">完成测试次数</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="statAvgScore">0</div>
+                    <div class="stat-label">平均测试得分</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🎯 掌握情况分布</div>
+            <div id="masteryChart" style="padding: 10px 0;"></div>
+        </div>
+    </div>
+
+    <!-- ========== ACHIEVEMENTS PAGE ========== -->
+    <div class="page" id="page-achievements">
+        <div class="card">
+            <div class="card-title">🏆 成就系统</div>
+            <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+                完成学习任务解锁成就，记录你的每一步成长！
+            </p>
+            <div class="achievement-grid" id="achievementGrid"></div>
+        </div>
+    </div>
+
+    <!-- ========== WORD LEARNING PAGE (inline) ========== -->
+    <div class="page" id="page-word-learning">
+        <div class="card">
+            <div class="card-title" style="justify-content:space-between;">
+                <span>📝 单词学习</span>
+                <span id="wordCounter" style="font-size:14px;font-weight:400;color:var(--text-secondary);">1/10</span>
+            </div>
+            <div class="word-card-display" id="wordCardDisplay">
+                <!-- Dynamic content -->
+            </div>
+            <div class="word-progress-bar">
+                <div class="word-progress-fill" id="wordProgressBar" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== QUIZ PAGE (inline) ========== -->
+    <div class="page" id="page-quiz">
+        <div class="card">
+            <div class="card-title">✅ 迷你测试</div>
+            <div class="quiz-progress" id="quizProgress"></div>
+            <div id="quizContent">
+                <!-- Dynamic quiz content -->
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+    <div class="bottom-nav-item active" data-page="home">
+        <span class="b-icon">🏠</span><span class="b-label">首页</span>
+    </div>
+    <div class="bottom-nav-item" data-page="vocabulary">
+        <span class="b-icon">📚</span><span class="b-label">词汇</span>
+    </div>
+    <div class="bottom-nav-item" data-page="grammar">
+        <span class="b-icon">📐</span><span class="b-label">语法</span>
+    </div>
+    <div class="bottom-nav-item" data-page="stats">
+        <span class="b-icon">📊</span><span class="b-label">统计</span>
+    </div>
+    <div class="bottom-nav-item" data-page="achievements">
+        <span class="b-icon">🏆</span><span class="b-label">成就</span>
+    </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-icon" id="modalIcon">🎉</div>
+        <div class="modal-title" id="modalTitle">恭喜！</div>
+        <div class="modal-desc" id="modalDesc">你完成了今日的学习任务！</div>
+        <button class="modal-btn" onclick="closeModal()">太棒了</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Confetti Container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ============================================================
+// BASIC ENGLISH DATA - 850 Core Words + 18 Grammar Rules
+// ============================================================
+
+const BASIC_WORDS = [
+    // === OPERATIONS (100) ===
+    { word: "come", pos: "verb", phonetic: "/kʌm/", meaning: "来；到达", example: "Please come here." },
+    { word: "get", pos: "verb", phonetic: "/ɡet/", meaning: "得到；获得", example: "I get a letter." },
+    { word: "give", pos: "verb", phonetic: "/ɡɪv/", meaning: "给；给予", example: "Give me the book." },
+    { word: "go", pos: "verb", phonetic: "/ɡəʊ/", meaning: "去；走", example: "Let us go home." },
+    { word: "keep", pos: "verb", phonetic: "/kiːp/", meaning: "保持；保留", example: "Keep quiet, please." },
+    { word: "let", pos: "verb", phonetic: "/let/", meaning: "让；允许", example: "Let me help you." },
+    { word: "make", pos: "verb", phonetic: "/meɪk/", meaning: "做；制造", example: "Make a cake." },
+    { word: "put", pos: "verb", phonetic: "/pʊt/", meaning: "放；放置", example: "Put it on the table." },
+    { word: "seem", pos: "verb", phonetic: "/siːm/", meaning: "似乎；好像", example: "He seems tired." },
+    { word: "take", pos: "verb", phonetic: "/teɪk/", meaning: "拿；取", example: "Take this seat." },
+    { word: "be", pos: "verb", phonetic: "/biː/", meaning: "是；存在", example: "She is a teacher." },
+    { word: "do", pos: "verb", phonetic: "/duː/", meaning: "做；完成", example: "Do your work." },
+    { word: "have", pos: "verb", phonetic: "/hæv/", meaning: "有；拥有", example: "I have a car." },
+    { word: "say", pos: "verb", phonetic: "/seɪ/", meaning: "说；讲", example: "Say it again." },
+    { word: "see", pos: "verb", phonetic: "/siː/", meaning: "看见；看到", example: "I see a bird." },
+    { word: "send", pos: "verb", phonetic: "/send/", meaning: "发送；寄送", example: "Send a message." },
+    { word: "may", pos: "verb", phonetic: "/meɪ/", meaning: "可以；可能", example: "May I come in?" },
+    { word: "will", pos: "verb", phonetic: "/wɪl/", meaning: "将；愿意", example: "I will go." },
+    { word: "about", pos: "prep", phonetic: "/əˈbaʊt/", meaning: "关于；大约", example: "Talk about it." },
+    { word: "across", pos: "prep", phonetic: "/əˈkrɒs/", meaning: "穿过；横过", example: "Walk across the street." },
+    { word: "after", pos: "prep", phonetic: "/ˈɑːftə(r)/", meaning: "在...之后", example: "After dinner." },
+    { word: "against", pos: "prep", phonetic: "/əˈɡenst/", meaning: "反对；靠着", example: "Lean against the wall." },
+    { word: "among", pos: "prep", phonetic: "/əˈmʌŋ/", meaning: "在...之中", example: "Among the people." },
+    { word: "at", pos: "prep", phonetic: "/æt/", meaning: "在...（地点/时间）", example: "At home." },
+    { word: "before", pos: "prep", phonetic: "/bɪˈfɔː(r)/", meaning: "在...之前", example: "Before lunch." },
+    { word: "between", pos: "prep", phonetic: "/bɪˈtwiːn/", meaning: "在...之间", example: "Between two cities." },
+    { word: "by", pos: "prep", phonetic: "/baɪ/", meaning: "通过；在...旁边", example: "Go by bus." },
+    { word: "down", pos: "prep", phonetic: "/daʊn/", meaning: "向下；沿着", example: "Go down the hill." },
+    { word: "from", pos: "prep", phonetic: "/frɒm/", meaning: "来自；从", example: "From China." },
+    { word: "in", pos: "prep", phonetic: "/ɪn/", meaning: "在...里面", example: "In the room." },
+    { word: "off", pos: "prep", phonetic: "/ɒf/", meaning: "离开；从...掉下", example: "Take off your coat." },
+    { word: "on", pos: "prep", phonetic: "/ɒn/", meaning: "在...上面", example: "On the table." },
+    { word: "over", pos: "prep", phonetic: "/ˈəʊvə(r)/", meaning: "在...上方；超过", example: "Over the bridge." },
+    { word: "through", pos: "prep", phonetic: "/θruː/", meaning: "穿过；通过", example: "Through the window." },
+    { word: "to", pos: "prep", phonetic: "/tuː/", meaning: "到；向", example: "Go to school." },
+    { word: "under", pos: "prep", phonetic: "/ˈʌndə(r)/", meaning: "在...下面", example: "Under the bed." },
+    { word: "up", pos: "prep", phonetic: "/ʌp/", meaning: "向上；沿着", example: "Up the hill." },
+    { word: "with", pos: "prep", phonetic: "/wɪð/", meaning: "和...一起；用", example: "Come with me." },
+    { word: "and", pos: "conj", phonetic: "/ænd/", meaning: "和；并且", example: "You and I." },
+    { word: "because", pos: "conj", phonetic: "/bɪˈkɒz/", meaning: "因为", example: "Because I am tired." },
+    { word: "but", pos: "conj", phonetic: "/bʌt/", meaning: "但是；然而", example: "Small but strong." },
+    { word: "if", pos: "conj", phonetic: "/ɪf/", meaning: "如果；是否", example: "If you want." },
+    { word: "or", pos: "conj", phonetic: "/ɔː(r)/", meaning: "或者；否则", example: "Tea or coffee?" },
+    { word: "though", pos: "conj", phonetic: "/ðəʊ/", meaning: "虽然；尽管", example: "Though it is late." },
+    { word: "while", pos: "conj", phonetic: "/waɪl/", meaning: "当...时候；然而", example: "While I was out." },
+    { word: "how", pos: "adv", phonetic: "/haʊ/", meaning: "如何；怎样", example: "How are you?" },
+    { word: "much", pos: "adv", phonetic: "/mʌtʃ/", meaning: "很多；非常", example: "Thank you very much." },
+    { word: "not", pos: "adv", phonetic: "/nɒt/", meaning: "不；没有", example: "I am not sure." },
+    { word: "only", pos: "adv", phonetic: "/ˈəʊnli/", meaning: "仅仅；只有", example: "Only one person." },
+    { word: "so", pos: "adv", phonetic: "/səʊ/", meaning: "如此；所以", example: "So good!" },
+    { word: "than", pos: "prep", phonetic: "/ðæn/", meaning: "比", example: "Better than before." },
+    { word: "that", pos: "pron", phonetic: "/ðæt/", meaning: "那个；那", example: "That is my book." },
+    { word: "this", pos: "pron", phonetic: "/ðɪs/", meaning: "这个；这", example: "This is nice." },
+    { word: "i", pos: "pron", phonetic: "/aɪ/", meaning: "我", example: "I am happy." },
+    { word: "he", pos: "pron", phonetic: "/hiː/", meaning: "他", example: "He is tall." },
+    { word: "you", pos: "pron", phonetic: "/juː/", meaning: "你；你们", example: "You are welcome." },
+    { word: "it", pos: "pron", phonetic: "/ɪt/", meaning: "它", example: "It is raining." },
+    { word: "we", pos: "pron", phonetic: "/wiː/", meaning: "我们", example: "We are friends." },
+    { word: "they", pos: "pron", phonetic: "/ðeɪ/", meaning: "他们", example: "They are coming." },
+
+    // === THINGS (400) - Sample of key words ===
+    { word: "account", pos: "noun", phonetic: "/əˈkaʊnt/", meaning: "账户；描述", example: "Open an account." },
+    { word: "act", pos: "noun", phonetic: "/ækt/", meaning: "行为；法案", example: "A brave act." },
+    { word: "addition", pos: "noun", phonetic: "/əˈdɪʃn/", meaning: "增加；加法", example: "In addition to this." },
+    { word: "agreement", pos: "noun", phonetic: "/əˈɡriːmənt/", meaning: "协议；同意", example: "Sign the agreement." },
+    { word: "air", pos: "noun", phonetic: "/eə(r)/", meaning: "空气；天空", example: "Fresh air." },
+    { word: "amount", pos: "noun", phonetic: "/əˈmaʊnt/", meaning: "数量；金额", example: "A large amount." },
+    { word: "animal", pos: "noun", phonetic: "/ˈænɪml/", meaning: "动物", example: "A wild animal." },
+    { word: "answer", pos: "noun", phonetic: "/ˈɑːnsə(r)/", meaning: "回答；答案", example: "The right answer." },
+    { word: "apple", pos: "noun", phonetic: "/ˈæpl/", meaning: "苹果", example: "A red apple." },
+    { word: "arm", pos: "noun", phonetic: "/ɑːm/", meaning: "手臂；胳膊", example: "Break your arm." },
+    { word: "art", pos: "noun", phonetic: "/ɑːt/", meaning: "艺术；美术", example: "Modern art." },
+    { word: "baby", pos: "noun", phonetic: "/ˈbeɪbi/", meaning: "婴儿", example: "A cute baby." },
+    { word: "back", pos: "noun", phonetic: "/bæk/", meaning: "背部；后面", example: "Turn back." },
+    { word: "ball", pos: "noun", phonetic: "/bɔːl/", meaning: "球", example: "Play with a ball." },
+    { word: "bank", pos: "noun", phonetic: "/bæŋk/", meaning: "银行；河岸", example: "Go to the bank." },
+    { word: "base", pos: "noun", phonetic: "/beɪs/", meaning: "基础；基地", example: "The base of the building." },
+    { word: "basket", pos: "noun", phonetic: "/ˈbɑːskɪt/", meaning: "篮子", example: "A fruit basket." },
+    { word: "bath", pos: "noun", phonetic: "/bɑːθ/", meaning: "洗澡；浴缸", example: "Take a bath." },
+    { word: "bed", pos: "noun", phonetic: "/bed/", meaning: "床", example: "Go to bed." },
+    { word: "bird", pos: "noun", phonetic: "/bɜːd/", meaning: "鸟", example: "A small bird." },
+    { word: "bit", pos: "noun", phonetic: "/bɪt/", meaning: "一点；小块", example: "Wait a bit." },
+    { word: "book", pos: "noun", phonetic: "/bʊk/", meaning: "书", example: "Read a book." },
+    { word: "box", pos: "noun", phonetic: "/bɒks/", meaning: "盒子；箱子", example: "A gift box." },
+    { word: "boy", pos: "noun", phonetic: "/bɔɪ/", meaning: "男孩", example: "A smart boy." },
+    { word: "brain", pos: "noun", phonetic: "/breɪn/", meaning: "大脑", example: "Use your brain." },
+    { word: "bread", pos: "noun", phonetic: "/bred/", meaning: "面包", example: "Eat some bread." },
+    { word: "break", pos: "noun", phonetic: "/breɪk/", meaning: "休息；断裂", example: "Take a break." },
+    { word: "brother", pos: "noun", phonetic: "/ˈbrʌðə(r)/", meaning: "兄弟", example: "My brother." },
+    { word: "building", pos: "noun", phonetic: "/ˈbɪldɪŋ/", meaning: "建筑物", example: "A tall building." },
+    { word: "burn", pos: "noun", phonetic: "/bɜːn/", meaning: "烧伤；燃烧", example: "A bad burn." },
+    { word: "business", pos: "noun", phonetic: "/ˈbɪznəs/", meaning: "生意；商业", example: "Do business." },
+    { word: "butter", pos: "noun", phonetic: "/ˈbʌtə(r)/", meaning: "黄油", example: "Put butter on bread." },
+    { word: "cake", pos: "noun", phonetic: "/keɪk/", meaning: "蛋糕", example: "Birthday cake." },
+    { word: "camera", pos: "noun", phonetic: "/ˈkæmərə/", meaning: "照相机", example: "Use a camera." },
+    { word: "card", pos: "noun", phonetic: "/kɑːd/", meaning: "卡片", example: "A birthday card." },
+    { word: "care", pos: "noun", phonetic: "/keə(r)/", meaning: "关心；照顾", example: "Take care." },
+    { word: "cause", pos: "noun", phonetic: "/kɔːz/", meaning: "原因；事业", example: "The cause of fire." },
+    { word: "chalk", pos: "noun", phonetic: "/tʃɔːk/", meaning: "粉笔", example: "Write with chalk." },
+    { word: "chance", pos: "noun", phonetic: "/tʃɑːns/", meaning: "机会；可能性", example: "A good chance." },
+    { word: "change", pos: "noun", phonetic: "/tʃeɪndʒ/", meaning: "变化；零钱", example: "Make a change." },
+    { word: "cloth", pos: "noun", phonetic: "/klɒθ/", meaning: "布料；布", example: "A piece of cloth." },
+    { word: "color", pos: "noun", phonetic: "/ˈkʌlə(r)/", meaning: "颜色", example: "What color?" },
+    { word: "company", pos: "noun", phonetic: "/ˈkʌmpəni/", meaning: "公司；陪伴", example: "A big company." },
+    { word: "copy", pos: "noun", phonetic: "/ˈkɒpi/", meaning: "副本；抄本", example: "Make a copy." },
+    { word: "cord", pos: "noun", phonetic: "/kɔːd/", meaning: "绳子；细绳", example: "Tie with a cord." },
+    { word: "cotton", pos: "noun", phonetic: "/ˈkɒtn/", meaning: "棉花", example: "Wear cotton clothes." },
+    { word: "country", pos: "noun", phonetic: "/ˈkʌntri/", meaning: "国家；乡村", example: "My country." },
+    { word: "cover", pos: "noun", phonetic: "/ˈkʌvə(r)/", meaning: "封面；覆盖物", example: "The cover of a book." },
+    { word: "cream", pos: "noun", phonetic: "/kriːm/", meaning: "奶油", example: "Ice cream." },
+    { word: "crime", pos: "noun", phonetic: "/kraɪm/", meaning: "犯罪", example: "Fight against crime." },
+    { word: "current", pos: "noun", phonetic: "/ˈkʌrənt/", meaning: "水流；电流；潮流", example: "Electric current." },
+    { word: "cut", pos: "noun", phonetic: "/kʌt/", meaning: "切口；削减", example: "A deep cut." },
+    { word: "damage", pos: "noun", phonetic: "/ˈdæmɪdʒ/", meaning: "损害；损失", example: "Do no damage." },
+    { word: "danger", pos: "noun", phonetic: "/ˈdeɪndʒə(r)/", meaning: "危险", example: "In danger." },
+    { word: "daughter", pos: "noun", phonetic: "/ˈdɔːtə(r)/", meaning: "女儿", example: "My daughter." },
+    { word: "day", pos: "noun", phonetic: "/deɪ/", meaning: "天；白天", example: "A sunny day." },
+    { word: "death", pos: "noun", phonetic: "/deθ/", meaning: "死亡", example: "The cause of death." },
+    { word: "degree", pos: "noun", phonetic: "/dɪˈɡriː/", meaning: "程度；学位", example: "A high degree." },
+    { word: "design", pos: "noun", phonetic: "/dɪˈzaɪn/", meaning: "设计", example: "A new design." },
+    { word: "detail", pos: "noun", phonetic: "/ˈdiːteɪl/", meaning: "细节", example: "In detail." },
+    { word: "development", pos: "noun", phonetic: "/dɪˈveləpmənt/", meaning: "发展；开发", example: "City development." },
+    { word: "direction", pos: "noun", phonetic: "/daɪˈrekʃn/", meaning: "方向；说明", example: "Which direction?" },
+    { word: "discovery", pos: "noun", phonetic: "/dɪˈskʌvəri/", meaning: "发现", example: "A great discovery." },
+    { word: "distance", pos: "noun", phonetic: "/ˈdistəns/", meaning: "距离", example: "Long distance." },
+    { word: "distribution", pos: "noun", phonetic: "/ˌdɪstrɪˈbjuːʃn/", meaning: "分配；分布", example: "Income distribution." },
+    { word: "division", pos: "noun", phonetic: "/dɪˈvɪʒn/", meaning: "划分；除法", example: "Division of labor." },
+    { word: "dog", pos: "noun", phonetic: "/dɒɡ/", meaning: "狗", example: "A lovely dog." },
+    { word: "door", pos: "noun", phonetic: "/dɔː(r)/", meaning: "门", example: "Open the door." },
+    { word: "dress", pos: "noun", phonetic: "/dres/", meaning: "连衣裙；穿着", example: "Wear a dress." },
+    { word: "ear", pos: "noun", phonetic: "/ɪə(r)/", meaning: "耳朵", example: "Listen with your ear." },
+    { word: "earth", pos: "noun", phonetic: "/ɜːθ/", meaning: "地球；泥土", example: "On the earth." },
+    { word: "edge", pos: "noun", phonetic: "/edʒ/", meaning: "边缘", example: "At the edge." },
+    { word: "education", pos: "noun", phonetic: "/ˌedʒuˈkeɪʃn/", meaning: "教育", example: "Get an education." },
+    { word: "effect", pos: "noun", phonetic: "/ɪˈfekt/", meaning: "效果；影响", example: "Have an effect on." },
+    { word: "end", pos: "noun", phonetic: "/end/", meaning: "末端；结束", example: "At the end." },
+    { word: "error", pos: "noun", phonetic: "/ˈerə(r)/", meaning: "错误", example: "Make an error." },
+    { word: "event", pos: "noun", phonetic: "/ɪˈvent/", meaning: "事件；活动", example: "A big event." },
+    { word: "example", pos: "noun", phonetic: "/ɪɡˈzɑːmpl/", meaning: "例子；榜样", example: "For example." },
+    { word: "exchange", pos: "noun", phonetic: "/ɪksˈtʃeɪndʒ/", meaning: "交换；兑换", example: "Money exchange." },
+    { word: "existence", pos: "noun", phonetic: "/ɪɡˈzɪstəns/", meaning: "存在", example: "In existence." },
+    { word: "experience", pos: "noun", phonetic: "/ɪkˈspɪəriəns/", meaning: "经验；经历", example: "Work experience." },
+    { word: "eye", pos: "noun", phonetic: "/aɪ/", meaning: "眼睛", example: "Keep an eye on." },
+    { word: "face", pos: "noun", phonetic: "/feɪs/", meaning: "脸；面对", example: "A smiling face." },
+    { word: "fact", pos: "noun", phonetic: "/fækt/", meaning: "事实", example: "In fact." },
+    { word: "fall", pos: "noun", phonetic: "/fɔːl/", meaning: "落下；秋天", example: "A heavy fall." },
+    { word: "family", pos: "noun", phonetic: "/ˈfæməli/", meaning: "家庭", example: "My family." },
+    { word: "feather", pos: "noun", phonetic: "/ˈfeðə(r)/", meaning: "羽毛", example: "Bird feather." },
+    { word: "field", pos: "noun", phonetic: "/fiːld/", meaning: "田野；领域", example: "A green field." },
+    { word: "finger", pos: "noun", phonetic: "/ˈfɪŋɡə(r)/", meaning: "手指", example: "Five fingers." },
+    { word: "fire", pos: "noun", phonetic: "/faɪə(r)/", meaning: "火", example: "Catch fire." },
+    { word: "flower", pos: "noun", phonetic: "/ˈflaʊə(r)/", meaning: "花", example: "A beautiful flower." },
+    { word: "food", pos: "noun", phonetic: "/fuːd/", meaning: "食物", example: "Healthy food." },
+    { word: "force", pos: "noun", phonetic: "/fɔːs/", meaning: "力量；武力", example: "By force." },
+    { word: "form", pos: "noun", phonetic: "/fɔːm/", meaning: "形式；表格", example: "Fill in the form." },
+    { word: "frame", pos: "noun", phonetic: "/freɪm/", meaning: "框架；边框", example: "Picture frame." },
+    { word: "fruit", pos: "noun", phonetic: "/fruːt/", meaning: "水果", example: "Eat fresh fruit." },
+    { word: "glass", pos: "noun", phonetic: "/ɡlɑːs/", meaning: "玻璃；玻璃杯", example: "Drink a glass of water." },
+    { word: "gold", pos: "noun", phonetic: "/ɡəʊld/", meaning: "金子；金色", example: "Pure gold." },
+    { word: "government", pos: "noun", phonetic: "/ˈɡʌvənmənt/", meaning: "政府", example: "Local government." },
+    { word: "grain", pos: "noun", phonetic: "/ɡreɪn/", meaning: "谷物；颗粒", example: "A grain of rice." },
+    { word: "grass", pos: "noun", phonetic: "/ɡrɑːs/", meaning: "草", example: "Green grass." },
+    { word: "group", pos: "noun", phonetic: "/ɡruːp/", meaning: "组；群", example: "A group of students." },
+    { word: "growth", pos: "noun", phonetic: "/ɡrəʊθ/", meaning: "生长；增长", example: "Economic growth." },
+    { word: "guide", pos: "noun", phonetic: "/ɡaɪd/", meaning: "向导；指南", example: "Tour guide." },
+    { word: "hair", pos: "noun", phonetic: "/heə(r)/", meaning: "头发", example: "Long hair." },
+    { word: "hand", pos: "noun", phonetic: "/hænd/", meaning: "手", example: "Shake hands." },
+    { word: "harbor", pos: "noun", phonetic: "/ˈhɑːbə(r)/", meaning: "港口", example: "A safe harbor." },
+    { word: "harmony", pos: "noun", phonetic: "/ˈhɑːməni/", meaning: "和谐", example: "Live in harmony." },
+    { word: "hat", pos: "noun", phonetic: "/hæt/", meaning: "帽子", example: "Wear a hat." },
+    { word: "head", pos: "noun", phonetic: "/hed/", meaning: "头；头脑", example: "Use your head." },
+    { word: "health", pos: "noun", phonetic: "/helθ/", meaning: "健康", example: "Good health." },
+    { word: "history", pos: "noun", phonetic: "/ˈhɪstri/", meaning: "历史", example: "World history." },
+    { word: "hole", pos: "noun", phonetic: "/həʊl/", meaning: "洞；孔", example: "Dig a hole." },
+    { word: "home", pos: "noun", phonetic: "/həʊm/", meaning: "家", example: "Go home." },
+    { word: "hope", pos: "noun", phonetic: "/həʊp/", meaning: "希望", example: "Full of hope." },
+    { word: "hour", pos: "noun", phonetic: "/ˈaʊə(r)/", meaning: "小时", example: "One hour later." },
+    { word: "house", pos: "noun", phonetic: "/haʊs/", meaning: "房子", example: "Buy a house." },
+    { word: "idea", pos: "noun", phonetic: "/aɪˈdɪə/", meaning: "主意；想法", example: "A good idea." },
+    { word: "industry", pos: "noun", phonetic: "/ˈɪndəstri/", meaning: "工业；产业", example: "Heavy industry." },
+    { word: "iron", pos: "noun", phonetic: "/ˈaɪən/", meaning: "铁；熨斗", example: "Strike while iron is hot." },
+    { word: "island", pos: "noun", phonetic: "/ˈaɪlənd/", meaning: "岛", example: "A small island." },
+    { word: "job", pos: "noun", phonetic: "/dʒɒb/", meaning: "工作", example: "Find a job." },
+    { word: "journey", pos: "noun", phonetic: "/ˈdʒɜːni/", meaning: "旅程", example: "A long journey." },
+    { word: "judge", pos: "noun", phonetic: "/dʒʌdʒ/", meaning: "法官；判断", example: "A fair judge." },
+    { word: "key", pos: "noun", phonetic: "/kiː/", meaning: "钥匙；关键", example: "The key to success." },
+    { word: "knowledge", pos: "noun", phonetic: "/ˈnɒlɪdʒ/", meaning: "知识", example: "Common knowledge." },
+    { word: "land", pos: "noun", phonetic: "/lænd/", meaning: "陆地；土地", example: "On the land." },
+    { word: "language", pos: "noun", phonetic: "/ˈlæŋɡwɪdʒ/", meaning: "语言", example: "English language." },
+    { word: "law", pos: "noun", phonetic: "/lɔː/", meaning: "法律", example: "Break the law." },
+    { word: "lead", pos: "noun", phonetic: "/liːd/", meaning: "领导；铅", example: "Take the lead." },
+    { word: "learning", pos: "noun", phonetic: "/ˈlɜːnɪŋ/", meaning: "学习；学问", example: "Love of learning." },
+    { word: "letter", pos: "noun", phonetic: "/ˈletə(r)/", meaning: "信；字母", example: "Write a letter." },
+    { word: "level", pos: "noun", phonetic: "/ˈlevl/", meaning: "水平；层次", example: "High level." },
+    { word: "library", pos: "noun", phonetic: "/ˈlaɪbrəri/", meaning: "图书馆", example: "City library." },
+    { word: "line", pos: "noun", phonetic: "/laɪn/", meaning: "线；行", example: "Draw a line." },
+    { word: "love", pos: "noun", phonetic: "/lʌv/", meaning: "爱", example: "Fall in love." },
+    { word: "machine", pos: "noun", phonetic: "/məˈʃiːn/", meaning: "机器", example: "A washing machine." },
+    { word: "man", pos: "noun", phonetic: "/mæn/", meaning: "男人；人类", example: "A good man." },
+    { word: "map", pos: "noun", phonetic: "/mæp/", meaning: "地图", example: "Look at the map." },
+    { word: "mass", pos: "noun", phonetic: "/mæs/", meaning: "大量；质量", example: "Mass production." },
+    { word: "meal", pos: "noun", phonetic: "/miːl/", meaning: "餐；一顿饭", example: "Three meals a day." },
+    { word: "measure", pos: "noun", phonetic: "/ˈmeʒə(r)/", meaning: "测量；措施", example: "Take measures." },
+    { word: "meeting", pos: "noun", phonetic: "/ˈmiːtɪŋ/", meaning: "会议", example: "Attend a meeting." },
+    { word: "memory", pos: "noun", phonetic: "/ˈmeməri/", meaning: "记忆", example: "Good memory." },
+    { word: "metal", pos: "noun", phonetic: "/metl/", meaning: "金属", example: "Heavy metal." },
+    { word: "mind", pos: "noun", phonetic: "/maɪnd/", meaning: "头脑；心思", example: "Change your mind." },
+    { word: "minute", pos: "noun", phonetic: "/ˈmɪnɪt/", meaning: "分钟", example: "Wait a minute." },
+    { word: "money", pos: "noun", phonetic: "/ˈmʌni/", meaning: "钱", example: "Save money." },
+    { word: "month", pos: "noun", phonetic: "/mʌnθ/", meaning: "月", example: "This month." },
+    { word: "morning", pos: "noun", phonetic: "/ˈmɔːnɪŋ/", meaning: "早晨", example: "Good morning." },
+    { word: "mother", pos: "noun", phonetic: "/ˈmʌðə(r)/", meaning: "母亲", example: "My mother." },
+    { word: "motion", pos: "noun", phonetic: "/ˈməʊʃn/", meaning: "运动；动作", example: "Slow motion." },
+    { word: "mountain", pos: "noun", phonetic: "/ˈmaʊntən/", meaning: "山", example: "Climb a mountain." },
+    { word: "music", pos: "noun", phonetic: "/ˈmjuːzɪk/", meaning: "音乐", example: "Listen to music." },
+    { word: "name", pos: "noun", phonetic: "/neɪm/", meaning: "名字", example: "What is your name?" },
+    { word: "nation", pos: "noun", phonetic: "/ˈneɪʃn/", meaning: "国家；民族", example: "Our nation." },
+    { word: "need", pos: "noun", phonetic: "/niːd/", meaning: "需要", example: "No need to worry." },
+    { word: "news", pos: "noun", phonetic: "/njuːz/", meaning: "新闻", example: "Breaking news." },
+    { word: "night", pos: "noun", phonetic: "/naɪt/", meaning: "夜晚", example: "Good night." },
+    { word: "note", pos: "noun", phonetic: "/nəʊt/", meaning: "笔记；便条", example: "Take notes." },
+    { word: "number", pos: "noun", phonetic: "/ˈnʌmbə(r)/", meaning: "数字；号码", example: "Phone number." },
+    { word: "object", pos: "noun", phonetic: "/ˈɒbdʒɪkt/", meaning: "物体；目标", example: "An unknown object." },
+    { word: "oil", pos: "noun", phonetic: "/ɔɪl/", meaning: "油；石油", example: "Cooking oil." },
+    { word: "operation", pos: "noun", phonetic: "/ˌɒpəˈreɪʃn/", meaning: "操作；手术", example: "Business operation." },
+    { word: "opinion", pos: "noun", phonetic: "/əˈpɪnjən/", meaning: "意见；看法", example: "In my opinion." },
+    { word: "order", pos: "noun", phonetic: "/ˈɔːdə(r)/", meaning: "订单；秩序", example: "Place an order." },
+    { word: "organization", pos: "noun", phonetic: "/ˌɔːɡənaɪˈzeɪʃn/", meaning: "组织", example: "World Health Organization." },
+    { word: "owner", pos: "noun", phonetic: "/ˈəʊnə(r)/", meaning: "主人；所有者", example: "The owner of the car." },
+    { word: "page", pos: "noun", phonetic: "/peɪdʒ/", meaning: "页", example: "Turn the page." },
+    { word: "pain", pos: "noun", phonetic: "/peɪn/", meaning: "疼痛", example: "Feel pain." },
+    { word: "part", pos: "noun", phonetic: "/pɑːt/", meaning: "部分；角色", example: "Take part in." },
+    { word: "paste", pos: "noun", phonetic: "/peɪst/", meaning: "浆糊；膏", example: "Tooth paste." },
+    { word: "peace", pos: "noun", phonetic: "/piːs/", meaning: "和平", example: "World peace." },
+    { word: "person", pos: "noun", phonetic: "/ˈpɜːsn/", meaning: "人", example: "A nice person." },
+    { word: "place", pos: "noun", phonetic: "/pleɪs/", meaning: "地方", example: "A nice place." },
+    { word: "plant", pos: "noun", phonetic: "/plɑːnt/", meaning: "植物；工厂", example: "A green plant." },
+    { word: "play", pos: "noun", phonetic: "/pleɪ/", meaning: "游戏；戏剧", example: "Let us play." },
+    { word: "point", pos: "noun", phonetic: "/pɔɪnt/", meaning: "点；要点", example: "The point is..." },
+    { word: "power", pos: "noun", phonetic: "/ˈpaʊə(r)/", meaning: "力量；权力", example: "Nuclear power." },
+    { word: "price", pos: "noun", phonetic: "/praɪs/", meaning: "价格", example: "The price of oil." },
+    { word: "print", pos: "noun", phonetic: "/prɪnt/", meaning: "印刷品；打印", example: "In print." },
+    { word: "process", pos: "noun", phonetic: "/ˈprəʊses/", meaning: "过程；流程", example: "Learning process." },
+    { word: "produce", pos: "noun", phonetic: "/ˈprɒdjuːs/", meaning: "农产品", example: "Fresh produce." },
+    { word: "profit", pos: "noun", phonetic: "/ˈprɒfɪt/", meaning: "利润", example: "Make a profit." },
+    { word: "property", pos: "noun", phonetic: "/ˈprɒpəti/", meaning: "财产；性质", example: "Private property." },
+    { word: "pull", pos: "noun", phonetic: "/pʊl/", meaning: "拉", example: "Give it a pull." },
+    { word: "purpose", pos: "noun", phonetic: "/ˈpɜːpəs/", meaning: "目的；意图", example: "For what purpose?" },
+    { word: "push", pos: "noun", phonetic: "/pʊʃ/", meaning: "推", example: "Give it a push." },
+    { word: "quality", pos: "noun", phonetic: "/ˈkwɒləti/", meaning: "质量；品质", example: "High quality." },
+    { word: "question", pos: "noun", phonetic: "/ˈkwestʃən/", meaning: "问题", example: "Ask a question." },
+    { word: "rain", pos: "noun", phonetic: "/reɪn/", meaning: "雨", example: "Heavy rain." },
+    { word: "range", pos: "noun", phonetic: "/reɪndʒ/", meaning: "范围；山脉", example: "A wide range." },
+    { word: "rate", pos: "noun", phonetic: "/reɪt/", meaning: "比率；速度", example: "Birth rate." },
+    { word: "reason", pos: "noun", phonetic: "/ˈriːzn/", meaning: "原因；理由", example: "The reason for this." },
+    { word: "record", pos: "noun", phonetic: "/ˈrekɔːd/", meaning: "记录", example: "Break the record." },
+    { word: "region", pos: "noun", phonetic: "/ˈriːdʒən/", meaning: "地区", example: "This region." },
+    { word: "relation", pos: "noun", phonetic: "/rɪˈleɪʃn/", meaning: "关系", example: "International relations." },
+    { word: "religion", pos: "noun", phonetic: "/rɪˈlɪdʒən/", meaning: "宗教", example: "Freedom of religion." },
+    { word: "representative", pos: "noun", phonetic: "/ˌreprɪˈzentətɪv/", meaning: "代表", example: "Sales representative." },
+    { word: "request", pos: "noun", phonetic: "/rɪˈkwest/", meaning: "请求", example: "By request." },
+    { word: "respect", pos: "noun", phonetic: "/rɪˈspekt/", meaning: "尊重", example: "Show respect." },
+    { word: "rest", pos: "noun", phonetic: "/rest/", meaning: "休息；其余", example: "Take a rest." },
+    { word: "reward", pos: "noun", phonetic: "/rɪˈwɔːd/", meaning: "报酬；奖励", example: "Get a reward." },
+    { word: "rice", pos: "noun", phonetic: "/raɪs/", meaning: "米饭；稻米", example: "Eat rice." },
+    { word: "river", pos: "noun", phonetic: "/ˈrɪvə(r)/", meaning: "河流", example: "Cross the river." },
+    { word: "road", pos: "noun", phonetic: "/rəʊd/", meaning: "道路", example: "On the road." },
+    { word: "rock", pos: "noun", phonetic: "/rɒk/", meaning: "岩石", example: "A big rock." },
+    { word: "roll", pos: "noun", phonetic: "/rəʊl/", meaning: "卷；滚动", example: "A roll of paper." },
+    { word: "room", pos: "noun", phonetic: "/ruːm/", meaning: "房间；空间", example: "Living room." },
+    { word: "rule", pos: "noun", phonetic: "/ruːl/", meaning: "规则", example: "Follow the rules." },
+    { word: "salt", pos: "noun", phonetic: "/sɔːlt/", meaning: "盐", example: "Add some salt." },
+    { word: "sand", pos: "noun", phonetic: "/sænd/", meaning: "沙子", example: "On the sand." },
+    { word: "scale", pos: "noun", phonetic: "/skeɪl/", meaning: "规模；刻度；鳞", example: "Large scale." },
+    { word: "science", pos: "noun", phonetic: "/ˈsaɪəns/", meaning: "科学", example: "Natural science." },
+    { word: "sea", pos: "noun", phonetic: "/siː/", meaning: "海", example: "By the sea." },
+    { word: "seat", pos: "noun", phonetic: "/siːt/", meaning: "座位", example: "Take a seat." },
+    { word: "seed", pos: "noun", phonetic: "/siːd/", meaning: "种子", example: "Plant seeds." },
+    { word: "servant", pos: "noun", phonetic: "/ˈsɜːvənt/", meaning: "仆人；公务员", example: "Public servant." },
+    { word: "sex", pos: "noun", phonetic: "/seks/", meaning: "性别", example: "Same sex." },
+    { word: "shade", pos: "noun", phonetic: "/ʃeɪd/", meaning: "阴凉处；阴影", example: "Sit in the shade." },
+    { word: "shake", pos: "noun", phonetic: "/ʃeɪk/", meaning: "摇晃；握手", example: "Shake hands." },
+    { word: "shame", pos: "noun", phonetic: "/ʃeɪm/", meaning: "羞耻；遗憾", example: "What a shame!" },
+    { word: "shock", pos: "noun", phonetic: "/ʃɒk/", meaning: "震惊；休克", example: "Electric shock." },
+    { word: "side", pos: "noun", phonetic: "/saɪd/", meaning: "侧面；一边", example: "Side by side." },
+    { word: "sign", pos: "noun", phonetic: "/saɪn/", meaning: "标志；符号", example: "Traffic sign." },
+    { word: "silver", pos: "noun", phonetic: "/ˈsɪlvə(r)/", meaning: "银；银色", example: "Pure silver." },
+    { word: "size", pos: "noun", phonetic: "/saɪz/", meaning: "大小；尺寸", example: "What size?" },
+    { word: "sky", pos: "noun", phonetic: "/skaɪ/", meaning: "天空", example: "Blue sky." },
+    { word: "sleep", pos: "noun", phonetic: "/sliːp/", meaning: "睡眠", example: "Get some sleep." },
+    { word: "smell", pos: "noun", phonetic: "/smel/", meaning: "气味", example: "A bad smell." },
+    { word: "smile", pos: "noun", phonetic: "/smaɪl/", meaning: "微笑", example: "With a smile." },
+    { word: "smoke", pos: "noun", phonetic: "/sməʊk/", meaning: "烟", example: "No smoke." },
+    { word: "snow", pos: "noun", phonetic: "/snəʊ/", meaning: "雪", example: "Heavy snow." },
+    { word: "soap", pos: "noun", phonetic: "/səʊp/", meaning: "肥皂", example: "Use soap." },
+    { word: "society", pos: "noun", phonetic: "/səˈsaɪəti/", meaning: "社会", example: "Modern society." },
+    { word: "son", pos: "noun", phonetic: "/sʌn/", meaning: "儿子", example: "My son." },
+    { word: "sort", pos: "noun", phonetic: "/sɔːt/", meaning: "种类；分类", example: "What sort of...?" },
+    { word: "sound", pos: "noun", phonetic: "/saʊnd/", meaning: "声音", example: "Loud sound." },
+    { word: "soup", pos: "noun", phonetic: "/suːp/", meaning: "汤", example: "Hot soup." },
+    { word: "space", pos: "noun", phonetic: "/speɪs/", meaning: "空间；太空", example: "Outer space." },
+    { word: "start", pos: "noun", phonetic: "/stɑːt/", meaning: "开始", example: "From the start." },
+    { word: "state", pos: "noun", phonetic: "/steɪt/", meaning: "状态；州；国家", example: "United States." },
+    { word: "statement", pos: "noun", phonetic: "/ˈsteɪtmənt/", meaning: "声明；陈述", example: "Make a statement." },
+    { word: "steam", pos: "noun", phonetic: "/stiːm/", meaning: "蒸汽", example: "Steam engine." },
+    { word: "steel", pos: "noun", phonetic: "/stiːl/", meaning: "钢", example: "Stainless steel." },
+    { word: "step", pos: "noun", phonetic: "/step/", meaning: "步；步骤", example: "Step by step." },
+    { word: "stone", pos: "noun", phonetic: "/stəʊn/", meaning: "石头", example: "Throw a stone." },
+    { word: "stop", pos: "noun", phonetic: "/stɒp/", meaning: "停止；车站", example: "Bus stop." },
+    { word: "story", pos: "noun", phonetic: "/ˈstɔːri/", meaning: "故事", example: "Tell a story." },
+    { word: "street", pos: "noun", phonetic: "/striːt/", meaning: "街道", example: "Main street." },
+    { word: "sun", pos: "noun", phonetic: "/sʌn/", meaning: "太阳", example: "In the sun." },
+    { word: "system", pos: "noun", phonetic: "/ˈsɪstəm/", meaning: "系统", example: "Solar system." },
+    { word: "table", pos: "noun", phonetic: "/ˈteɪbl/", meaning: "桌子", example: "Dinner table." },
+    { word: "talk", pos: "noun", phonetic: "/tɔːk/", meaning: "谈话", example: "Have a talk." },
+    { word: "tax", pos: "noun", phonetic: "/tæks/", meaning: "税", example: "Pay taxes." },
+    { word: "teaching", pos: "noun", phonetic: "/ˈtiːtʃɪŋ/", meaning: "教学", example: "Teaching method." },
+    { word: "test", pos: "noun", phonetic: "/test/", meaning: "测试", example: "Pass the test." },
+    { word: "thing", pos: "noun", phonetic: "/θɪŋ/", meaning: "东西；事情", example: "A good thing." },
+    { word: "thought", pos: "noun", phonetic: "/θɔːt/", meaning: "想法；思想", example: "Deep in thought." },
+    { word: "thread", pos: "noun", phonetic: "/θred/", meaning: "线；线索", example: "A needle and thread." },
+    { word: "time", pos: "noun", phonetic: "/taɪm/", meaning: "时间", example: "On time." },
+    { word: "tooth", pos: "noun", phonetic: "/tuːθ/", meaning: "牙齿", example: "Brush your teeth." },
+    { word: "touch", pos: "noun", phonetic: "/tʌtʃ/", meaning: "接触；触摸", example: "Keep in touch." },
+    { word: "trade", pos: "noun", phonetic: "/treɪd/", meaning: "贸易", example: "Foreign trade." },
+    { word: "trouble", pos: "noun", phonetic: "/ˈtrʌbl/", meaning: "麻烦", example: "In trouble." },
+    { word: "turn", pos: "noun", phonetic: "/tɜːn/", meaning: "转弯；轮流", example: "Take turns." },
+    { word: "unit", pos: "noun", phonetic: "/ˈjuːnɪt/", meaning: "单位；单元", example: "Storage unit." },
+    { word: "use", pos: "noun", phonetic: "/juːs/", meaning: "用途；使用", example: "Make use of." },
+    { word: "value", pos: "noun", phonetic: "/ˈvæljuː/", meaning: "价值", example: "Market value." },
+    { word: "view", pos: "noun", phonetic: "/vjuː/", meaning: "观点；风景", example: "Point of view." },
+    { word: "voice", pos: "noun", phonetic: "/vɔɪs/", meaning: "声音", example: "In a low voice." },
+    { word: "walk", pos: "noun", phonetic: "/wɔːk/", meaning: "步行；散步", example: "Take a walk." },
+    { word: "war", pos: "noun", phonetic: "/wɔː(r)/", meaning: "战争", example: "World War II." },
+    { word: "wash", pos: "noun", phonetic: "/wɒʃ/", meaning: "洗", example: "Do the wash." },
+    { word: "waste", pos: "noun", phonetic: "/weɪst/", meaning: "浪费；废物", example: "No waste." },
+    { word: "water", pos: "noun", phonetic: "/ˈwɔːtə(r)/", meaning: "水", example: "Drink water." },
+    { word: "wave", pos: "noun", phonetic: "/weɪv/", meaning: "波浪", example: "Sea waves." },
+    { word: "weather", pos: "noun", phonetic: "/ˈweðə(r)/", meaning: "天气", example: "Nice weather." },
+    { word: "week", pos: "noun", phonetic: "/wiːk/", meaning: "周；星期", example: "This week." },
+    { word: "weight", pos: "noun", phonetic: "/weɪt/", meaning: "重量", example: "Lose weight." },
+    { word: "wind", pos: "noun", phonetic: "/wɪnd/", meaning: "风", example: "Strong wind." },
+    { word: "wine", pos: "noun", phonetic: "/waɪn/", meaning: "葡萄酒", example: "Red wine." },
+    { word: "woman", pos: "noun", phonetic: "/ˈwʊmən/", meaning: "女人", example: "A young woman." },
+    { word: "wood", pos: "noun", phonetic: "/wʊd/", meaning: "木头；森林", example: "In the woods." },
+    { word: "wool", pos: "noun", phonetic: "/wʊl/", meaning: "羊毛", example: "Pure wool." },
+    { word: "word", pos: "noun", phonetic: "/wɜːd/", meaning: "单词；话", example: "In a word." },
+    { word: "work", pos: "noun", phonetic: "/wɜːk/", meaning: "工作", example: "Go to work." },
+    { word: "wound", pos: "noun", phonetic: "/wuːnd/", meaning: "伤口", example: "A deep wound." },
+    { word: "year", pos: "noun", phonetic: "/jɪə(r)/", meaning: "年", example: "This year." },
+
+    // === QUALITIES (100) - Adjectives ===
+    { word: "able", pos: "adj", phonetic: "/ˈeɪbl/", meaning: "能够的；有能力的", example: "Be able to do it." },
+    { word: "acid", pos: "adj", phonetic: "/ˈæsɪd/", meaning: "酸的；尖刻的", example: "Acid taste." },
+    { word: "angry", pos: "adj", phonetic: "/ˈæŋɡri/", meaning: "生气的", example: "Get angry." },
+    { word: "automatic", pos: "adj", phonetic: "/ˌɔːtəˈmætɪk/", meaning: "自动的", example: "Automatic door." },
+    { word: "beautiful", pos: "adj", phonetic: "/ˈbjuːtɪfl/", meaning: "美丽的", example: "Beautiful flower." },
+    { word: "black", pos: "adj", phonetic: "/blæk/", meaning: "黑色的", example: "Black coffee." },
+    { word: "boiling", pos: "adj", phonetic: "/ˈbɔɪlɪŋ/", meaning: "沸腾的", example: "Boiling water." },
+    { word: "careful", pos: "adj", phonetic: "/ˈkeəfl/", meaning: "仔细的；小心的", example: "Be careful!" },
+    { word: "certain", pos: "adj", phonetic: "/ˈsɜːtn/", meaning: "确定的；某些", example: "For certain." },
+    { word: "chemical", pos: "adj", phonetic: "/ˈkemɪkl/", meaning: "化学的", example: "Chemical reaction." },
+    { word: "chief", pos: "adj", phonetic: "/tʃiːf/", meaning: "主要的；首席的", example: "Chief reason." },
+    { word: "clean", pos: "adj", phonetic: "/kliːn/", meaning: "干净的", example: "Clean room." },
+    { word: "clear", pos: "adj", phonetic: "/klɪə(r)/", meaning: "清楚的", example: "Clear sky." },
+    { word: "common", pos: "adj", phonetic: "/ˈkɒmən/", meaning: "普通的；共同的", example: "Common sense." },
+    { word: "complete", pos: "adj", phonetic: "/kəmˈpliːt/", meaning: "完全的；完成的", example: "Complete success." },
+    { word: "conscious", pos: "adj", phonetic: "/ˈkɒnʃəs/", meaning: "有意识的", example: "Be conscious of." },
+    { word: "cruel", pos: "adj", phonetic: "/ˈkruːəl/", meaning: "残酷的", example: "Cruel behavior." },
+    { word: "deep", pos: "adj", phonetic: "/diːp/", meaning: "深的", example: "Deep water." },
+    { word: "dependent", pos: "adj", phonetic: "/dɪˈpendənt/", meaning: "依赖的", example: "Dependent on." },
+    { word: "different", pos: "adj", phonetic: "/ˈdɪfrənt/", meaning: "不同的", example: "Different from." },
+    { word: "dirty", pos: "adj", phonetic: "/ˈdɜːti/", meaning: "脏的", example: "Dirty hands." },
+    { word: "dry", pos: "adj", phonetic: "/draɪ/", meaning: "干燥的", example: "Dry weather." },
+    { word: "early", pos: "adj", phonetic: "/ˈɜːli/", meaning: "早的", example: "Early morning." },
+    { word: "elastic", pos: "adj", phonetic: "/ɪˈlætɪk/", meaning: "有弹性的", example: "Elastic band." },
+    { word: "electric", pos: "adj", phonetic: "/ɪˈlektrɪk/", meaning: "电的", example: "Electric light." },
+    { word: "equal", pos: "adj", phonetic: "/ˈiːkwəl/", meaning: "相等的", example: "Equal rights." },
+    { word: "false", pos: "adj", phonetic: "/fɔːls/", meaning: "错误的；假的", example: "False information." },
+    { word: "fat", pos: "adj", phonetic: "/fæt/", meaning: "胖的；肥的", example: "Fat cat." },
+    { word: "fertile", pos: "adj", phonetic: "/ˈfɜːtaɪl/", meaning: "肥沃的", example: "Fertile land." },
+    { word: "first", pos: "adj", phonetic: "/fɜːst/", meaning: "第一的", example: "First time." },
+    { word: "fixed", pos: "adj", phonetic: "/fɪkst/", meaning: "固定的", example: "Fixed price." },
+    { word: "flat", pos: "adj", phonetic: "/flæt/", meaning: "平坦的", example: "Flat surface." },
+    { word: "full", pos: "adj", phonetic: "/fʊl/", meaning: "满的；完整的", example: "Full of joy." },
+    { word: "general", pos: "adj", phonetic: "/ˈdʒenrəl/", meaning: "一般的；总的", example: "General idea." },
+    { word: "good", pos: "adj", phonetic: "/ɡʊd/", meaning: "好的", example: "Good job!" },
+    { word: "great", pos: "adj", phonetic: "/ɡreɪt/", meaning: "伟大的；巨大的", example: "Great idea." },
+    { word: "grey", pos: "adj", phonetic: "/ɡreɪ/", meaning: "灰色的", example: "Grey hair." },
+    { word: "happy", pos: "adj", phonetic: "/ˈhæpi/", meaning: "快乐的", example: "Happy birthday!" },
+    { word: "hard", pos: "adj", phonetic: "/hɑːd/", meaning: "硬的；困难的", example: "Hard work." },
+    { word: "healthy", pos: "adj", phonetic: "/ˈhelθi/", meaning: "健康的", example: "Healthy life." },
+    { word: "high", pos: "adj", phonetic: "/haɪ/", meaning: "高的", example: "High mountain." },
+    { word: "hollow", pos: "adj", phonetic: "/ˈhɒləʊ/", meaning: "空的；中空的", example: "Hollow tree." },
+    { word: "important", pos: "adj", phonetic: "/ɪmˈpɔːtnt/", meaning: "重要的", example: "Very important." },
+    { word: "kind", pos: "adj", phonetic: "/kaɪnd/", meaning: "善良的；友好的", example: "Be kind to others." },
+    { word: "like", pos: "adj", phonetic: "/laɪk/", meaning: "相似的", example: "Just like that." },
+    { word: "living", pos: "adj", phonetic: "/ˈlɪvɪŋ/", meaning: "活着的；生活的", example: "Living things." },
+    { word: "long", pos: "adj", phonetic: "/lɒŋ/", meaning: "长的", example: "Long time." },
+    { word: "loose", pos: "adj", phonetic: "/luːs/", meaning: "松的", example: "Loose change." },
+    { word: "loud", pos: "adj", phonetic: "/laʊd/", meaning: "大声的", example: "Loud music." },
+    { word: "low", pos: "adj", phonetic: "/ləʊ/", meaning: "低的", example: "Low price." },
+    { word: "main", pos: "adj", phonetic: "/meɪn/", meaning: "主要的", example: "Main street." },
+    { word: "male", pos: "adj", phonetic: "/meɪl/", meaning: "男性的；雄性的", example: "Male student." },
+    { word: "mixed", pos: "adj", phonetic: "/mɪkst/", meaning: "混合的", example: "Mixed feelings." },
+    { word: "narrow", pos: "adj", phonetic: "/ˈnærəʊ/", meaning: "狭窄的", example: "Narrow road." },
+    { word: "natural", pos: "adj", phonetic: "/ˈnætʃrəl/", meaning: "自然的", example: "Natural beauty." },
+    { word: "necessary", pos: "adj", phonetic: "/ˈnesəsəri/", meaning: "必要的", example: "If necessary." },
+    { word: "new", pos: "adj", phonetic: "/njuː/", meaning: "新的", example: "New friend." },
+    { word: "normal", pos: "adj", phonetic: "/ˈnɔːml/", meaning: "正常的", example: "Normal temperature." },
+    { word: "old", pos: "adj", phonetic: "/əʊld/", meaning: "老的；旧的", example: "Old friend." },
+    { word: "open", pos: "adj", phonetic: "/ˈəʊpən/", meaning: "开着的", example: "Open door." },
+    { word: "opposite", pos: "adj", phonetic: "/ˈɒpəzɪt/", meaning: "相反的", example: "Opposite side." },
+    { word: "ordinary", pos: "adj", phonetic: "/ˈɔːdnri/", meaning: "普通的", example: "Ordinary day." },
+    { word: "past", pos: "adj", phonetic: "/pɑːst/", meaning: "过去的", example: "Past few days." },
+    { word: "physical", pos: "adj", phonetic: "/ˈfɪzɪkl/", meaning: "物理的；身体的", example: "Physical exercise." },
+    { word: "political", pos: "adj", phonetic: "/pəˈlɪtɪkl/", meaning: "政治的", example: "Political party." },
+    { word: "poor", pos: "adj", phonetic: "/pɔː(r)/", meaning: "贫穷的；可怜的", example: "Poor family." },
+    { word: "possible", pos: "adj", phonetic: "/ˈpɒsəbl/", meaning: "可能的", example: "As soon as possible." },
+    { word: "present", pos: "adj", phonetic: "/ˈpreznt/", meaning: "现在的；出席的", example: "Present situation." },
+    { word: "private", pos: "adj", phonetic: "/ˈpraɪvət/", meaning: "私人的", example: "Private car." },
+    { word: "probable", pos: "adj", phonetic: "/ˈprɒbəbl/", meaning: "可能的", example: "Probable result." },
+    { word: "quick", pos: "adj", phonetic: "/kwɪk/", meaning: "快的", example: "Quick answer." },
+    { word: "quiet", pos: "adj", phonetic: "/ˈkwaɪət/", meaning: "安静的", example: "Quiet please." },
+    { word: "ready", pos: "adj", phonetic: "/ˈredi/", meaning: "准备好的", example: "Are you ready?" },
+    { word: "red", pos: "adj", phonetic: "/red/", meaning: "红色的", example: "Red apple." },
+    { word: "regular", pos: "adj", phonetic: "/ˈreɡjələ(r)/", meaning: "规律的；规则的", example: "Regular exercise." },
+    { word: "right", pos: "adj", phonetic: "/raɪt/", meaning: "正确的；右边的", example: "Right answer." },
+    { word: "round", pos: "adj", phonetic: "/raʊnd/", meaning: "圆的", example: "Round table." },
+    { word: "same", pos: "adj", phonetic: "/seɪm/", meaning: "相同的", example: "Same as before." },
+    { word: "secret", pos: "adj", phonetic: "/ˈsiːkrɪt/", meaning: "秘密的", example: "Secret plan." },
+    { word: "separate", pos: "adj", phonetic: "/ˈseprət/", meaning: "分开的", example: "Separate rooms." },
+    { word: "serious", pos: "adj", phonetic: "/ˈsɪəriəs/", meaning: "严肃的；严重的", example: "Serious problem." },
+    { word: "sharp", pos: "adj", phonetic: "/ʃɑːp/", meaning: "锋利的；敏锐的", example: "Sharp knife." },
+    { word: "smooth", pos: "adj", phonetic: "/smuːð/", meaning: "光滑的", example: "Smooth surface." },
+    { word: "solid", pos: "adj", phonetic: "/ˈsɒlɪd/", meaning: "固体的；坚实的", example: "Solid ground." },
+    { word: "special", pos: "adj", phonetic: "/ˈspeʃl/", meaning: "特别的", example: "Special day." },
+    { word: "sticky", pos: "adj", phonetic: "/ˈstɪki/", meaning: "粘的", example: "Sticky note." },
+    { word: "stiff", pos: "adj", phonetic: "/stɪf/", meaning: "僵硬的", example: "Stiff neck." },
+    { word: "straight", pos: "adj", phonetic: "/streɪt/", meaning: "直的", example: "Straight line." },
+    { word: "strong", pos: "adj", phonetic: "/strɒŋ/", meaning: "强壮的", example: "Strong wind." },
+    { word: "sudden", pos: "adj", phonetic: "/ˈsʌdn/", meaning: "突然的", example: "Sudden change." },
+    { word: "sweet", pos: "adj", phonetic: "/swiːt/", meaning: "甜的", example: "Sweet candy." },
+    { word: "thick", pos: "adj", phonetic: "/θɪk/", meaning: "厚的", example: "Thick book." },
+    { word: "thin", pos: "adj", phonetic: "/θɪn/", meaning: "薄的；瘦的", example: "Thin ice." },
+    { word: "tired", pos: "adj", phonetic: "/ˈtaɪəd/", meaning: "累的", example: "Feel tired." },
+    { word: "true", pos: "adj", phonetic: "/truː/", meaning: "真实的", example: "True story." },
+    { word: "uncertain", pos: "adj", phonetic: "/ʌnˈsɜːtn/", meaning: "不确定的", example: "Uncertain future." },
+    { word: "under", pos: "adj", phonetic: "/ˈʌndə(r)/", meaning: "下面的", example: "Under side." },
+    { word: "upright", pos: "adj", phonetic: "/ˈʌpraɪt/", meaning: "直立的；正直的", example: "Upright piano." },
+    { word: "warm", pos: "adj", phonetic: "/wɔːm/", meaning: "温暖的", example: "Warm day." },
+    { word: "wet", pos: "adj", phonetic: "/wet/", meaning: "湿的", example: "Wet ground." },
+    { word: "wide", pos: "adj", phonetic: "/waɪd/", meaning: "宽的", example: "Wide river." },
+    { word: "wrong", pos: "adj", phonetic: "/rɒŋ/", meaning: "错误的", example: "Wrong way." },
+    { word: "young", pos: "adj", phonetic: "/jʌŋ/", meaning: "年轻的", example: "Young man." },
+
+    // === PICTURABLES (150) - Visual words (sample) ===
+    { word: "angle", pos: "noun", phonetic: "/ˈæŋɡl/", meaning: "角；角度", example: "Right angle." },
+    { word: "ant", pos: "noun", phonetic: "/ænt/", meaning: "蚂蚁", example: "An ant on the ground." },
+    { word: "arch", pos: "noun", phonetic: "/ɑːtʃ/", meaning: "拱门", example: "Stone arch." },
+    { word: "bag", pos: "noun", phonetic: "/bæɡ/", meaning: "包；袋子", example: "School bag." },
+    { word: "band", pos: "noun", phonetic: "/bænd/", meaning: "乐队；带子", example: "Music band." },
+    { word: "basin", pos: "noun", phonetic: "/ˈbeɪsn/", meaning: "盆；盆地", example: "Wash basin." },
+    { word: "bee", pos: "noun", phonetic: "/biː/", meaning: "蜜蜂", example: "A busy bee." },
+    { word: "bell", pos: "noun", phonetic: "/bel/", meaning: "铃", example: "Ring the bell." },
+    { word: "blade", pos: "noun", phonetic: "/bleɪd/", meaning: "刀片；叶片", example: "Knife blade." },
+    { word: "board", pos: "noun", phonetic: "/bɔːd/", meaning: "板；木板", example: "Blackboard." },
+    { word: "boat", pos: "noun", phonetic: "/bəʊt/", meaning: "船", example: "Row a boat." },
+    { word: "bone", pos: "noun", phonetic: "/bəʊn/", meaning: "骨头", example: "Dog bone." },
+    { word: "boot", pos: "noun", phonetic: "/buːt/", meaning: "靴子", example: "Winter boots." },
+    { word: "bottle", pos: "noun", phonetic: "/ˈbɒtl/", meaning: "瓶子", example: "Water bottle." },
+    { word: "brain", pos: "noun", phonetic: "/breɪn/", meaning: "大脑", example: "Human brain." },
+    { word: "brush", pos: "noun", phonetic: "/brʌʃ/", meaning: "刷子", example: "Tooth brush." },
+    { word: "bucket", pos: "noun", phonetic: "/ˈbʌkɪt/", meaning: "桶", example: "Water bucket." },
+    { word: "bulb", pos: "noun", phonetic: "/bʌlb/", meaning: "灯泡", example: "Light bulb." },
+    { word: "button", pos: "noun", phonetic: "/ˈbʌtn/", meaning: "按钮；纽扣", example: "Press the button." },
+    { word: "can", pos: "noun", phonetic: "/kæn/", meaning: "罐头；能够", example: "A can of soda." },
+    { word: "canvas", pos: "noun", phonetic: "/ˈkænvəs/", meaning: "帆布；画布", example: "Paint on canvas." },
+    { word: "carriage", pos: "noun", phonetic: "/ˈkærɪdʒ/", meaning: "马车；车厢", example: "Train carriage." },
+    { word: "cat", pos: "noun", phonetic: "/kæt/", meaning: "猫", example: "A cute cat." },
+    { word: "chain", pos: "noun", phonetic: "/tʃeɪn/", meaning: "链条", example: "Gold chain." },
+    { word: "cheese", pos: "noun", phonetic: "/tʃiːz/", meaning: "奶酪", example: "Eat cheese." },
+    { word: "chest", pos: "noun", phonetic: "/tʃest/", meaning: "胸部；箱子", example: "Treasure chest." },
+    { word: "chin", pos: "noun", phonetic: "/tʃɪn/", meaning: "下巴", example: "Touch your chin." },
+    { word: "church", pos: "noun", phonetic: "/tʃɜːtʃ/", meaning: "教堂", example: "Go to church." },
+    { word: "clock", pos: "noun", phonetic: "/klɒk/", meaning: "时钟", example: "Wall clock." },
+    { word: "coat", pos: "noun", phonetic: "/kəʊt/", meaning: "外套", example: "Winter coat." },
+    { word: "collar", pos: "noun", phonetic: "/ˈkɒlə(r)/", meaning: "衣领", example: "Shirt collar." },
+    { word: "comb", pos: "noun", phonetic: "/kəʊm/", meaning: "梳子", example: "Hair comb." },
+    { word: "cord", pos: "noun", phonetic: "/kɔːd/", meaning: "绳子", example: "Electric cord." },
+    { word: "cow", pos: "noun", phonetic: "/kaʊ/", meaning: "奶牛", example: "Milk a cow." },
+    { word: "cup", pos: "noun", phonetic: "/kʌp/", meaning: "杯子", example: "Coffee cup." },
+    { word: "curtain", pos: "noun", phonetic: "/ˈkɜːtn/", meaning: "窗帘", example: "Draw the curtain." },
+    { word: "desk", pos: "noun", phonetic: "/desk/", meaning: "书桌", example: "Office desk." },
+    { word: "drain", pos: "noun", phonetic: "/dreɪn/", meaning: "排水管", example: "Clear the drain." },
+    { word: "drawer", pos: "noun", phonetic: "/drɔː(r)/", meaning: "抽屉", example: "Open the drawer." },
+    { word: "drop", pos: "noun", phonetic: "/drɒp/", meaning: "滴；下降", example: "A drop of water." },
+    { word: "egg", pos: "noun", phonetic: "/eɡ/", meaning: "鸡蛋", example: "Boiled eggs." },
+    { word: "engine", pos: "noun", phonetic: "/ˈendʒɪn/", meaning: "引擎", example: "Car engine." },
+    { word: "fan", pos: "noun", phonetic: "/fæn/", meaning: "风扇；迷", example: "Electric fan." },
+    { word: "flag", pos: "noun", phonetic: "/flæɡ/", meaning: "旗帜", example: "National flag." },
+    { word: "floor", pos: "noun", phonetic: "/flɔː(r)/", meaning: "地板；楼层", example: "Clean the floor." },
+    { word: "fork", pos: "noun", phonetic: "/fɔːk/", meaning: "叉子", example: "Use a fork." },
+    { word: "frame", pos: "noun", phonetic: "/freɪm/", meaning: "框架", example: "Picture frame." },
+    { word: "garden", pos: "noun", phonetic: "/ˈɡɑːdn/", meaning: "花园", example: "In the garden." },
+    { word: "gate", pos: "noun", phonetic: "/ɡeɪt/", meaning: "大门", example: "Open the gate." },
+    { word: "girl", pos: "noun", phonetic: "/ɡɜːl/", meaning: "女孩", example: "A nice girl." },
+    { word: "glove", pos: "noun", phonetic: "/ɡlʌv/", meaning: "手套", example: "Winter gloves." },
+    { word: "goat", pos: "noun", phonetic: "/ɡəʊt/", meaning: "山羊", example: "A white goat." },
+    { word: "gun", pos: "noun", phonetic: "/ɡʌn/", meaning: "枪", example: "Toy gun." },
+    { word: "hook", pos: "noun", phonetic: "/hʊk/", meaning: "钩子", example: "Coat hook." },
+    { word: "horse", pos: "noun", phonetic: "/hɔːs/", meaning: "马", example: "Ride a horse." },
+    { word: "hospital", pos: "noun", phonetic: "/ˈhɒspɪtl/", meaning: "医院", example: "Go to hospital." },
+    { word: "island", pos: "noun", phonetic: "/ˈaɪlənd/", meaning: "岛屿", example: "Desert island." },
+    { word: "jewel", pos: "noun", phonetic: "/ˈdʒuːəl/", meaning: "珠宝", example: "Precious jewel." },
+    { word: "key", pos: "noun", phonetic: "/kiː/", meaning: "钥匙", example: "House key." },
+    { word: "knee", pos: "noun", phonetic: "/niː/", meaning: "膝盖", example: "Hurt your knee." },
+    { word: "knife", pos: "noun", phonetic: "/naɪf/", meaning: "刀", example: "Sharp knife." },
+    { word: "knot", pos: "noun", phonetic: "/nɒt/", meaning: "结", example: "Tie a knot." },
+    { word: "leaf", pos: "noun", phonetic: "/liːf/", meaning: "叶子", example: "Green leaf." },
+    { word: "leg", pos: "noun", phonetic: "/leɡ/", meaning: "腿", example: "Break a leg." },
+    { word: "lip", pos: "noun", phonetic: "/lɪp/", meaning: "嘴唇", example: "Red lips." },
+    { word: "lock", pos: "noun", phonetic: "/lɒk/", meaning: "锁", example: "Door lock." },
+    { word: "map", pos: "noun", phonetic: "/mæp/", meaning: "地图", example: "Road map." },
+    { word: "match", pos: "noun", phonetic: "/mætʃ/", meaning: "火柴；比赛", example: "Light a match." },
+    { word: "monkey", pos: "noun", phonetic: "/ˈmʌŋki/", meaning: "猴子", example: "Cute monkey." },
+    { word: "moon", pos: "noun", phonetic: "/muːn/", meaning: "月亮", example: "Full moon." },
+    { word: "mouth", pos: "noun", phonetic: "/maʊθ/", meaning: "嘴", example: "Open your mouth." },
+    { word: "nail", pos: "noun", phonetic: "/neɪl/", meaning: "钉子；指甲", example: "Hammer a nail." },
+    { word: "needle", pos: "noun", phonetic: "/ˈniːdl/", meaning: "针", example: "Sewing needle." },
+    { word: "net", pos: "noun", phonetic: "/net/", meaning: "网", example: "Fishing net." },
+    { word: "nose", pos: "noun", phonetic: "/nəʊz/", meaning: "鼻子", example: "Big nose." },
+    { word: "nut", pos: "noun", phonetic: "/nʌt/", meaning: "坚果", example: "Eat nuts." },
+    { word: "office", pos: "noun", phonetic: "/ˈɒfɪs/", meaning: "办公室", example: "Go to office." },
+    { word: "orange", pos: "noun", phonetic: "/ˈɒrɪndʒ/", meaning: "橙子；橙色", example: "Eat an orange." },
+    { word: "oven", pos: "noun", phonetic: "/ˈʌvn/", meaning: "烤箱", example: "Hot oven." },
+    { word: "parcel", pos: "noun", phonetic: "/ˈpɑːsl/", meaning: "包裹", example: "Mail parcel." },
+    { word: "pen", pos: "noun", phonetic: "/pen/", meaning: "钢笔", example: "Write with a pen." },
+    { word: "pencil", pos: "noun", phonetic: "/ˈpensl/", meaning: "铅笔", example: "Sharpen a pencil." },
+    { word: "picture", pos: "noun", phonetic: "/ˈpɪktʃə(r)/", meaning: "图片；照片", example: "Take a picture." },
+    { word: "pin", pos: "noun", phonetic: "/pɪn/", meaning: "大头针", example: "Safety pin." },
+    { word: "pipe", pos: "noun", phonetic: "/paɪp/", meaning: "管子", example: "Water pipe." },
+    { word: "plane", pos: "noun", phonetic: "/pleɪn/", meaning: "飞机", example: "Fly by plane." },
+    { word: "plate", pos: "noun", phonetic: "/pleɪt/", meaning: "盘子", example: "Dinner plate." },
+    { word: "plough", pos: "noun", phonetic: "/plaʊ/", meaning: "犁", example: "Use a plough." },
+    { word: "pocket", pos: "noun", phonetic: "/ˈpɒkɪt/", meaning: "口袋", example: "In your pocket." },
+    { word: "pot", pos: "noun", phonetic: "/pɒt/", meaning: "锅", example: "Cooking pot." },
+    { word: "potato", pos: "noun", phonetic: "/pəˈteɪtəʊ/", meaning: "土豆", example: "Boiled potatoes." },
+    { word: "prison", pos: "noun", phonetic: "/ˈprɪzn/", meaning: "监狱", example: "Go to prison." },
+    { word: "pump", pos: "noun", phonetic: "/pʌmp/", meaning: "泵", example: "Water pump." },
+    { word: "rail", pos: "noun", phonetic: "/reɪl/", meaning: "栏杆；铁轨", example: "Train rail." },
+    { word: "ring", pos: "noun", phonetic: "/rɪŋ/", meaning: "戒指；环", example: "Wedding ring." },
+    { word: "rod", pos: "noun", phonetic: "/rɒd/", meaning: "杆", example: "Fishing rod." },
+    { word: "roof", pos: "noun", phonetic: "/ruːf/", meaning: "屋顶", example: "House roof." },
+    { word: "root", pos: "noun", phonetic: "/ruːt/", meaning: "根", example: "Tree roots." },
+    { word: "rope", pos: "noun", phonetic: "/rəʊp/", meaning: "绳子", example: "Thick rope." },
+    { word: "saddle", pos: "noun", phonetic: "/ˈsdl/", meaning: "马鞍", example: "Horse saddle." },
+    { word: "school", pos: "noun", phonetic: "/skuːl/", meaning: "学校", example: "Go to school." },
+    { word: "scissors", pos: "noun", phonetic: "/ˈsɪzəz/", meaning: "剪刀", example: "Use scissors." },
+    { word: "screw", pos: "noun", phonetic: "/skruː/", meaning: "螺丝", example: "Loosen a screw." },
+    { word: "seed", pos: "noun", phonetic: "/siːd/", meaning: "种子", example: "Plant seeds." },
+    { word: "sheep", pos: "noun", phonetic: "/ʃiːp/", meaning: "绵羊", example: "Count sheep." },
+    { word: "shelf", pos: "noun", phonetic: "/ʃelf/", meaning: "架子", example: "Book shelf." },
+    { word: "shirt", pos: "noun", phonetic: "/ʃɜːt/", meaning: "衬衫", example: "White shirt." },
+    { word: "shoe", pos: "noun", phonetic: "/ʃuː/", meaning: "鞋子", example: "New shoes." },
+    { word: "skin", pos: "noun", phonetic: "/skɪn/", meaning: "皮肤", example: "Dry skin." },
+    { word: "skirt", pos: "noun", phonetic: "/skɜːt/", meaning: "裙子", example: "Short skirt." },
+    { word: "snake", pos: "noun", phonetic: "/sneɪk/", meaning: "蛇", example: "A green snake." },
+    { word: "sock", pos: "noun", phonetic: "/sɒk/", meaning: "袜子", example: "Pair of socks." },
+    { word: "spade", pos: "noun", phonetic: "/speɪd/", meaning: "铲子；黑桃", example: "Garden spade." },
+    { word: "spoon", pos: "noun", phonetic: "/spuːn/", meaning: "勺子", example: "Soup spoon." },
+    { word: "stamp", pos: "noun", phonetic: "/stæmp/", meaning: "邮票", example: "Postage stamp." },
+    { word: "star", pos: "noun", phonetic: "/stɑː(r)/", meaning: "星星", example: "Bright star." },
+    { word: "station", pos: "noun", phonetic: "/ˈsteɪʃn/", meaning: "车站", example: "Train station." },
+    { word: "stick", pos: "noun", phonetic: "/stɪk/", meaning: "棍子", example: "Walking stick." },
+    { word: "stocking", pos: "noun", phonetic: "/ˈstɒkɪŋ/", meaning: "长袜", example: "Christmas stocking." },
+    { word: "stomach", pos: "noun", phonetic: "/ˈstʌmək/", meaning: "胃；肚子", example: "Upset stomach." },
+    { word: "tail", pos: "noun", phonetic: "/teɪl/", meaning: "尾巴", example: "Dog tail." },
+    { word: "thread", pos: "noun", phonetic: "/θred/", meaning: "线", example: "Needle and thread." },
+    { word: "throat", pos: "noun", phonetic: "/θrəʊt/", meaning: "喉咙", example: "Sore throat." },
+    { word: "thumb", pos: "noun", phonetic: "/θʌm/", meaning: "拇指", example: "Green thumb." },
+    { word: "ticket", pos: "noun", phonetic: "/ˈtɪkɪt/", meaning: "票", example: "Train ticket." },
+    { word: "toe", pos: "noun", phonetic: "/təʊ/", meaning: "脚趾", example: "Hurt your toe." },
+    { word: "tongue", pos: "noun", phonetic: "/tʌŋ/", meaning: "舌头", example: "Hold your tongue." },
+    { word: "tooth", pos: "noun", phonetic: "/tuːθ/", meaning: "牙齿", example: "Brush teeth." },
+    { word: "town", pos: "noun", phonetic: "/taʊn/", meaning: "城镇", example: "My hometown." },
+    { word: "train", pos: "noun", phonetic: "/treɪn/", meaning: "火车", example: "Take a train." },
+    { word: "tray", pos: "noun", phonetic: "/treɪ/", meaning: "托盘", example: "Serving tray." },
+    { word: "tree", pos: "noun", phonetic: "/triː/", meaning: "树", example: "Tall tree." },
+    { word: "trousers", pos: "noun", phonetic: "/ˈtraʊzəz/", meaning: "裤子", example: "Wear trousers." },
+    { word: "umbrella", pos: "noun", phonetic: "/ʌmˈbrelə/", meaning: "雨伞", example: "Open umbrella." },
+    { word: "wall", pos: "noun", phonetic: "/wɔːl/", meaning: "墙", example: "White wall." },
+    { word: "watch", pos: "noun", phonetic: "/wɒtʃ/", meaning: "手表；观看", example: "Wrist watch." },
+    { word: "wheel", pos: "noun", phonetic: "/wiːl/", meaning: "轮子", example: "Car wheel." },
+    { word: "whip", pos: "noun", phonetic: "/wɪp/", meaning: "鞭子", example: "Crack the whip." },
+    { word: "whistle", pos: "noun", phonetic: "/ˈwɪsl/", meaning: "口哨", example: "Blow a whistle." },
+    { word: "window", pos: "noun", phonetic: "/ˈwɪndəʊ/", meaning: "窗户", example: "Open the window." },
+    { word: "wing", pos: "noun", phonetic: "/wɪŋ/", meaning: "翅膀", example: "Bird wings." },
+    { word: "wire", pos: "noun", phonetic: "/ˈwaɪə(r)/", meaning: "电线；金属丝", example: "Electric wire." },
+    { word: "worm", pos: "noun", phonetic: "/wɜːm/", meaning: "虫子", example: "Earth worm." },
+
+    // Additional words to reach closer to 850
+    { word: "all", pos: "pron", phonetic: "/ɔːl/", meaning: "所有；全部", example: "All of us." },
+    { word: "any", pos: "pron", phonetic: "/eni/", meaning: "任何", example: "Any questions?" },
+    { word: "every", pos: "pron", phonetic: "/ˈevri/", meaning: "每个", example: "Every day." },
+    { word: "no", pos: "pron", phonetic: "/nəʊ/", meaning: "没有；不", example: "No problem." },
+    { word: "other", pos: "pron", phonetic: "/ˈʌðə(r)/", meaning: "其他的", example: "Each other." },
+    { word: "some", pos: "pron", phonetic: "/sʌm/", meaning: "一些", example: "Some water." },
+    { word: "such", pos: "pron", phonetic: "/sʌtʃ/", meaning: "这样的", example: "Such a nice day." },
+    { word: "what", pos: "pron", phonetic: "/wɒt/", meaning: "什么", example: "What is this?" },
+    { word: "when", pos: "pron", phonetic: "/wen/", meaning: "什么时候", example: "When to start?" },
+    { word: "where", pos: "pron", phonetic: "/weə(r)/", meaning: "哪里", example: "Where are you?" },
+    { word: "which", pos: "pron", phonetic: "/wɪtʃ/", meaning: "哪一个", example: "Which one?" },
+    { word: "who", pos: "pron", phonetic: "/huː/", meaning: "谁", example: "Who is there?" },
+    { word: "why", pos: "pron", phonetic: "/waɪ/", meaning: "为什么", example: "Why not?" },
+    { word: "one", pos: "pron", phonetic: "/wʌn/", meaning: "一；一个", example: "One more." },
+    { word: "two", pos: "pron", phonetic: "/tuː/", meaning: "二", example: "Two apples." },
+    { word: "three", pos: "pron", phonetic: "/θriː/", meaning: "三", example: "Three cats." },
+    { word: "four", pos: "pron", phonetic: "/fɔː(r)/", meaning: "四", example: "Four seasons." },
+    { word: "five", pos: "pron", phonetic: "/faɪv/", meaning: "五", example: "Five stars." },
+    { word: "six", pos: "pron", phonetic: "/sɪks/", meaning: "六", example: "Six o'clock." },
+    { word: "seven", pos: "pron", phonetic: "/ˈsevn/", meaning: "七", example: "Seven days." },
+    { word: "eight", pos: "pron", phonetic: "/eɪt/", meaning: "八", example: "Eight hours." },
+    { word: "nine", pos: "pron", phonetic: "/naɪn/", meaning: "九", example: "Nine lives." },
+    { word: "ten", pos: "pron", phonetic: "/ten/", meaning: "十", example: "Ten minutes." },
+    { word: "hundred", pos: "pron", phonetic: "/ˈhʌndrəd/", meaning: "百", example: "A hundred years." },
+    { word: "thousand", pos: "pron", phonetic: "/ˈθaʊznd/", meaning: "千", example: "A thousand miles." },
+    { word: "a", pos: "art", phonetic: "/ə/", meaning: "一个（不定冠词）", example: "A book." },
+    { word: "an", pos: "art", phonetic: "/æn/", meaning: "一个（不定冠词）", example: "An apple." },
+    { word: "the", pos: "art", phonetic: "/ðə/", meaning: "这个（定冠词）", example: "The sun." },
+    { word: "her", pos: "pron", phonetic: "/hɜː(r)/", meaning: "她的；她（宾格）", example: "Her book." },
+    { word: "his", pos: "pron", phonetic: "/hɪz/", meaning: "他的", example: "His name." },
+    { word: "its", pos: "pron", phonetic: "/ɪts/", meaning: "它的", example: "Its color." },
+    { word: "our", pos: "pron", phonetic: "/ˈaʊə(r)/", meaning: "我们的", example: "Our home." },
+    { word: "their", pos: "pron", phonetic: "/ðeə(r)/", meaning: "他们的", example: "Their house." },
+    { word: "them", pos: "pron", phonetic: "/ðem/", meaning: "他们（宾格）", example: "Help them." },
+    { word: "us", pos: "pron", phonetic: "/ʌs/", meaning: "我们（宾格）", example: "Join us." },
+    { word: "myself", pos: "pron", phonetic: "/maɪˈself/", meaning: "我自己", example: "Do it myself." },
+    { word: "yourself", pos: "pron", phonetic: "/jɔːˈself/", meaning: "你自己", example: "Help yourself." },
+    { word: "herself", pos: "pron", phonetic: "/hɜːˈself/", meaning: "她自己", example: "She did it herself." },
+    { word: "himself", pos: "pron", phonetic: "/hɪmˈself/", meaning: "他自己", example: "He did it himself." },
+    { word: "itself", pos: "pron", phonetic: "/ɪtˈself/", meaning: "它自己", example: "The system itself." },
+    { word: "ourselves", pos: "pron", phonetic: "/ˌaʊəˈselvz/", meaning: "我们自己", example: "We did it ourselves." },
+    { word: "themselves", pos: "pron", phonetic: "/ðəmˈselvz/", meaning: "他们自己", example: "They did it themselves." },
+    { word: "something", pos: "pron", phonetic: "/ˈsʌmθɪŋ/", meaning: "某事；某物", example: "Something wrong." },
+    { word: "anything", pos: "pron", phonetic: "/ˈeniθɪŋ/", meaning: "任何事", example: "Anything else?" },
+    { word: "nothing", pos: "pron", phonetic: "/ˈnʌθɪŋ/", meaning: "没有什么", example: "Nothing special." },
+    { word: "everything", pos: "pron", phonetic: "/ˈevriθɪŋ/", meaning: "一切", example: "Everything is fine." },
+    { word: "everyone", pos: "pron", phonetic: "/ˈevriwʌn/", meaning: "每个人", example: "Everyone knows." },
+    { word: "someone", pos: "pron", phonetic: "/ˈsʌmwʌn/", meaning: "某人", example: "Someone is here." },
+    { word: "anyone", pos: "pron", phonetic: "/ˈeniwʌn/", meaning: "任何人", example: "Anyone can do it." },
+    { word: "noone", pos: "pron", phonetic: "/nəʊwʌn/", meaning: "没有人", example: "No one is perfect." },
+    { word: "now", pos: "adv", phonetic: "/naʊ/", meaning: "现在", example: "Right now." },
+    { word: "here", pos: "adv", phonetic: "/hɪə(r)/", meaning: "这里", example: "Come here." },
+    { word: "there", pos: "adv", phonetic: "/ðeə(r)/", meaning: "那里", example: "Over there." },
+    { word: "then", pos: "adv", phonetic: "/ðen/", meaning: "然后；那时", example: "And then..." },
+    { word: "always", pos: "adv", phonetic: "/ˈɔːlweɪz/", meaning: "总是", example: "Always be honest." },
+    { word: "never", pos: "adv", phonetic: "/ˈnevə(r)/", meaning: "从不", example: "Never give up." },
+    { word: "often", pos: "adv", phonetic: "/ˈɒfn/", meaning: "经常", example: "Often visit." },
+    { word: "still", pos: "adv", phonetic: "/stɪl/", meaning: "仍然", example: "Still waiting." },
+    { word: "already", pos: "adv", phonetic: "/ɔːlˈredi/", meaning: "已经", example: "Already done." },
+    { word: "again", pos: "adv", phonetic: "/əˈɡen/", meaning: "再次", example: "Try again." },
+    { word: "away", pos: "adv", phonetic: "/əˈweɪ/", meaning: "离开", example: "Go away." },
+    { word: "back", pos: "adv", phonetic: "/bæk/", meaning: "回来；向后", example: "Come back." },
+    { word: "forward", pos: "adv", phonetic: "/ˈfɔːwəd/", meaning: "向前", example: "Move forward." },
+    { word: "together", pos: "adv", phonetic: "/təˈɡeðə(r)/", meaning: "一起", example: "Work together." },
+    { word: "out", pos: "adv", phonetic: "/aʊt/", meaning: "出去", example: "Go out." },
+    { word: "inside", pos: "adv", phonetic: "/ˌɪnˈsaɪd/", meaning: "在里面", example: "Stay inside." },
+    { word: "outside", pos: "adv", phonetic: "/ˌaʊtˈsaɪd/", meaning: "在外面", example: "Go outside." },
+    { word: "above", pos: "adv", phonetic: "/əˈbʌv/", meaning: "在上面", example: "See above." },
+    { word: "below", pos: "adv", phonetic: "/bɪˈləʊ/", meaning: "在下面", example: "See below." },
+    { word: "near", pos: "adv", phonetic: "/nɪə(r)/", meaning: "附近", example: "Near the park." },
+    { word: "far", pos: "adv", phonetic: "/fɑː(r)/", meaning: "远", example: "Far away." },
+    { word: "just", pos: "adv", phonetic: "/dʒʌst/", meaning: "刚刚；仅仅", example: "Just now." },
+    { word: "quite", pos: "adv", phonetic: "/kwaɪt/", meaning: "相当", example: "Quite good." },
+    { word: "very", pos: "adv", phonetic: "/ˈveri/", meaning: "非常", example: "Very good." },
+    { word: "also", pos: "adv", phonetic: "/ˈɔːlsəʊ/", meaning: "也", example: "Me too, also." },
+    { word: "too", pos: "adv", phonetic: "/tuː/", meaning: "也；太", example: "Me too." },
+    { word: "well", pos: "adv", phonetic: "/wel/", meaning: "好地", example: "Well done." },
+    { word: "yes", pos: "adv", phonetic: "/jes/", meaning: "是", example: "Yes, please." },
+    { word: "both", pos: "pron", phonetic: "/bəʊθ/", meaning: "两者都", example: "Both of them." },
+    { word: "each", pos: "pron", phonetic: "/iːtʃ/", meaning: "每个", example: "Each one." },
+    { word: "either", pos: "pron", phonetic: "/ˈaɪðə(r)/", meaning: "两者之一", example: "Either one." },
+    { word: "neither", pos: "pron", phonetic: "/ˈniːðə(r)/", meaning: "两者都不", example: "Neither is correct." },
+    { word: "enough", pos: "adj", phonetic: "/ɪˈnʌf/", meaning: "足够的", example: "Good enough." },
+    { word: "less", pos: "adj", phonetic: "/les/", meaning: "更少的", example: "Less than before." },
+    { word: "more", pos: "adj", phonetic: "/mɔː(r)/", meaning: "更多的", example: "More and more." },
+    { word: "most", pos: "adj", phonetic: "/məʊst/", meaning: "最多的", example: "Most people." },
+    { word: "same", pos: "adj", phonetic: "/seɪm/", meaning: "相同的", example: "The same thing." },
+    { word: "whole", pos: "adj", phonetic: "/həʊl/", meaning: "整个的", example: "Whole world." },
+    { word: "own", pos: "adj", phonetic: "/əʊn/", meaning: "自己的", example: "My own car." },
+    { word: "next", pos: "adj", phonetic: "/nekst/", meaning: "下一个", example: "Next week." },
+    { word: "last", pos: "adj", phonetic: "/lɑːst/", meaning: "最后的", example: "Last night." },
+    { word: "another", pos: "pron", phonetic: "/əˈnʌðə(r)/", meaning: "另一个", example: "Another one." },
+    { word: "many", pos: "pron", phonetic: "/ˈmeni/", meaning: "许多", example: "Many people." },
+    { word: "much", pos: "pron", phonetic: "/mʌtʃ/", meaning: "许多（不可数）", example: "Too much." },
+    { word: "few", pos: "pron", phonetic: "/fjuː/", meaning: "少数", example: "A few friends." },
+    { word: "little", pos: "pron", phonetic: "/ˈlɪtl/", meaning: "少量", example: "A little water." },
+    { word: "fewer", pos: "adj", phonetic: "/ˈfjuːə(r)/", meaning: "更少的", example: "Fewer mistakes." },
+    { word: "least", pos: "adj", phonetic: "/liːst/", meaning: "最少的", example: "At least." },
+];
+
+const GRAMMAR_RULES = [
+    {
+        num: 1,
+        title: "复数形式 — 加 s 或 es",
+        desc: "名词变复数通常直接加 s。以 s, x, ch, sh, o 结尾的词加 es。",
+        examples: ["cat → cats", "box → boxes", "bus → buses", "dish → dishes"]
+    },
+    {
+        num: 2,
+        title: "比较级 — more/most 或 er/est",
+        desc: "短形容词（单音节）用 er/est，长形容词用 more/most。",
+        examples: ["big → bigger → biggest", "beautiful → more beautiful → most beautiful"]
+    },
+    {
+        num: 3,
+        title: "副词 — 形容词 + ly",
+        desc: "大部分副词由形容词后加 ly 构成。以 y 结尾的形容词，改 y 为 i 再加 ly。",
+        examples: ["quick → quickly", "happy → happily", "gentle → gently"]
+    },
+    {
+        num: 4,
+        title: "否定 — 使用 not",
+        desc: "否定句在动词后加 not。be 动词、情态动词直接加 not，实义动词借助 do/does/did。",
+        examples: ["I am not happy.", "He does not know.", "They will not come."]
+    },
+    {
+        num: 5,
+        title: "疑问句 — 倒装语序",
+        desc: "一般疑问句将 be/情态动词/助动词提前至主语之前。特殊疑问句在前面加疑问词。",
+        examples: ["Are you ready?", "Where do you live?", "Can she swim?"]
+    },
+    {
+        num: 6,
+        title: "数量表达 — 数字 + 名词",
+        desc: "数量用具体数字表达，可数名词注意单复数，不可数名词无复数。",
+        examples: ["two books", "three cups of water", "ten people"]
+    },
+    {
+        num: 7,
+        title: "代词替换 — 避免重复",
+        desc: "使用代词（he, she, it, they 等）代替已提及的名词，使句子简洁。",
+        examples: ["John is here. He is happy.", "The book is on the table. It is new."]
+    },
+    {
+        num: 8,
+        title: "所有格 — 使用 of",
+        desc: "基础英语优先使用 of 表示所属关系，而非 's 所有格形式。",
+        examples: ["the door of the room", "the cover of the book", "the end of the day"]
+    },
+    {
+        num: 9,
+        title: "形容词用法 — 不加冠词",
+        desc: "形容词单独使用时不加冠词 a/an/the，直接修饰名词。",
+        examples: ["good weather", "fresh air", "hard work"]
+    },
+    {
+        num: 10,
+        title: "动词时态 — 基础四态",
+        desc: "主要使用四种时态：一般现在时、一般过去时、一般将来时、现在进行时。",
+        examples: ["I work here.", "I worked there.", "I will go.", "I am working."]
+    },
+    {
+        num: 11,
+        title: "连词连接 — 合并句子",
+        desc: "使用 and, but, or, because, if, though 等连词将简单句合并为复合句。",
+        examples: ["I went home and slept.", "He is rich but unhappy.", "Stay if you want."]
+    },
+    {
+        num: 12,
+        title: "方向介词 — 表达位置移动",
+        desc: "使用 into, out of, across, through, along, round 等方向介词表达运动方向。",
+        examples: ["Walk into the room.", "Go across the street.", "Drive through the tunnel."]
+    },
+    {
+        num: 13,
+        title: "时间介词 — at/in/on",
+        desc: "at 用于具体时刻，in 用于较长时段（月/年/季节），on 用于具体日期。",
+        examples: ["at 6 o'clock", "in July", "on Monday", "in 2026"]
+    },
+    {
+        num: 14,
+        title: "介词短语作定语 — 后置修饰",
+        desc: "介词短语放在名词后面作定语，相当于一个简化的从句。",
+        examples: ["the man in the corner", "the book on the table", "the girl with red hair"]
+    },
+    {
+        num: 15,
+        title: "并列结构 — 平行一致",
+        desc: "并列成分保持相同语法形式：词性、时态、结构要平行对应。",
+        examples: ["I like reading, writing, and swimming.", "He is tall, strong, and kind."]
+    },
+    {
+        num: 16,
+        title: "从句简化 — 短语代替从句",
+        desc: "能用短语表达的就不要用完整从句，使语言更加简洁明了。",
+        examples: ["The man standing there = The man who is standing there", "Time permitting = If time permits"]
+    },
+    {
+        num: 17,
+        title: "被动语态 — be + 过去分词",
+        desc: "被动语态由 be 动词 + 过去分词构成，强调动作承受者而非执行者。",
+        examples: ["The book was written by him.", "The window is broken.", "English is spoken here."]
+    },
+    {
+        num: 18,
+        title: "固定搭配 — 常见习语",
+        desc: "基础英语中有大量固定动词搭配和习语，需整体记忆。",
+        examples: ["take care of", "make up one's mind", "give up", "look forward to"]
+    }
+];
+
+const ACHIEVEMENTS = [
+    { id: "first_day", icon: "🌱", name: "初出茅庐", desc: "完成第一天学习", condition: (d) => d.totalDays >= 1 },
+    { id: "streak_3", icon: "🔥", name: "三日之火", desc: "连续学习3天", condition: (d) => d.streak >= 3 },
+    { id: "streak_7", icon: "⭐", name: "一周达人", desc: "连续学习7天", condition: (d) => d.streak >= 7 },
+    { id: "streak_14", icon: "💪", name: "两周坚持", desc: "连续学习14天", condition: (d) => d.streak >= 14 },
+    { id: "streak_30", icon: "🏅", name: "月度冠军", desc: "连续学习30天", condition: (d) => d.streak >= 30 },
+    { id: "streak_60", icon: "🎖️", name: "双月战士", desc: "连续学习60天", condition: (d) => d.streak >= 60 },
+    { id: "streak_100", icon: "💎", name: "百日传奇", desc: "连续学习100天", condition: (d) => d.streak >= 100 },
+    { id: "words_50", icon: "📗", name: "词汇入门", desc: "学会50个单词", condition: (d) => d.learnedWords >= 50 },
+    { id: "words_100", icon: "📘", name: "百词斩将", desc: "学会100个单词", condition: (d) => d.learnedWords >= 100 },
+    { id: "words_200", icon: "📙", name: "词汇进阶", desc: "学会200个单词", condition: (d) => d.learnedWords >= 200 },
+    { id: "words_500", icon: "📕", name: "半壁江山", desc: "学会500个单词", condition: (d) => d.learnedWords >= 500 },
+    { id: "words_850", icon: "🏆", name: "词汇大师", desc: "学会全部850词", condition: (d) => d.learnedWords >= 850 },
+    { id: "quizzes_10", icon: "✏️", name: "初试牛刀", desc: "完成10次测试", condition: (d) => d.totalQuizzes >= 10 },
+    { id: "quizzes_50", icon: "🎯", name: "测试达人", desc: "完成50次测试", condition: (d) => d.totalQuizzes >= 50 },
+    { id: "perfect_5", icon: "💯", name: "满分天才", desc: "获得5次满分", condition: (d) => d.perfectScores >= 5 },
+    { id: "master_100", icon: "🧠", name: "百词精通", desc: "掌握100个单词", condition: (d) => d.masteredWords >= 100 },
+    { id: "minutes_60", icon: "⏰", name: "一小时学者", desc: "累计学习60分钟", condition: (d) => d.totalMinutes >= 60 },
+    { id: "minutes_300", icon: "🕐", name: "五小时耕耘", desc: "累计学习300分钟", condition: (d) => d.totalMinutes >= 300 },
+    { id: "all_rules", icon: "📐", name: "语法通", desc: "学完所有18条语法规则", condition: (d) => d.grammarRulesSeen >= 18 },
+];
+
+// ============================================================
+// STATE MANAGEMENT (localStorage)
+// ============================================================
+
+const STORAGE_KEY = 'basic_english_learning';
+
+function getDefaultState() {
+    return {
+        learnedWords: [],          // Array of word indices learned
+        masteredWords: [],         // Array of word indices mastered
+        wordMastery: {},           // { index: 0-3 mastery level }
+        checkins: [],              // Array of date strings 'YYYY-MM-DD'
+        todayTasks: { words: false, grammar: false, quiz: false },
+        todayWordIndex: 0,         // Which word batch we're on today
+        quizzesTaken: 0,
+        totalCorrect: 0,
+        totalQuestions: 0,
+        perfectScores: 0,
+        totalMinutes: 0,
+        grammarRulesSeen: [],      // Rule indices seen
+        lastVisitDate: null,
+        streak: 0,
+        achievements: [],
+        startTime: null,
+    };
+}
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            // Merge with defaults for any missing keys
+            const def = getDefaultState();
+            return { ...def, ...parsed };
+        }
+    } catch(e) {}
+    return getDefaultState();
+}
+
+function saveState(state) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch(e) {
+        console.warn('Save failed:', e);
+    }
+}
+
+let appState = loadState();
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+function switchPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+
+    const targetPage = document.getElementById('page-' + pageId);
+    if (targetPage) targetPage.classList.add('active');
+
+    document.querySelectorAll('.nav-tab[data-page="' + pageId + '"]').forEach(t => t.classList.add('active'));
+    document.querySelectorAll('.bottom-nav-item[data-page="' + pageId + '"]').forEach(b => b.classList.add('active'));
+
+    // Render page-specific content
+    if (pageId === 'vocabulary') renderWordBook();
+    if (pageId === 'grammar') renderGrammarRules();
+    if (pageId === 'stats') renderStats();
+    if (pageId === 'achievements') renderAchievements();
+    if (pageId === 'home') updateHomeUI();
+}
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchPage(tab.dataset.page));
+});
+document.querySelectorAll('.bottom-nav-item').forEach(item => {
+    item.addEventListener('click', () => switchPage(item.dataset.page));
+});
+
+// ============================================================
+// HOME PAGE
+// ============================================================
+
+function updateHomeUI() {
+    updateGreeting();
+    updateHeaderStats();
+    updateTaskStatus();
+    updateDailyProgress();
+    updateWeeklyStats();
+    updateStreakDisplay();
+}
+
+function updateGreeting() {
+    const hour = new Date().getHours();
+    let greeting = '晚上好';
+    if (hour < 6) greeting = '夜深了';
+    else if (hour < 12) greeting = '早上好';
+    else if (hour < 14) greeting = '中午好';
+    else if (hour < 18) greeting = '下午好';
+    document.getElementById('greetingText').textContent = greeting + '！';
+}
+
+function updateHeaderStats() {
+    document.getElementById('headerStreak').textContent = appState.streak;
+    document.getElementById('headerWords').textContent = appState.learnedWords.length;
+    document.getElementById('headerTodayMins').textContent = Math.round(appState.totalMinutes || 0);
+}
+
+function updateTaskStatus() {
+    const tasks = appState.todayTasks;
+    setTaskDone('taskWords', tasks.words);
+    setTaskDone('taskGrammar', tasks.grammar);
+    setTaskDone('taskQuiz', tasks.quiz);
+}
+
+function setTaskDone(id, done) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = done ? '✓' : '○';
+    el.className = 'task-status' + (done ? ' done' : '');
+}
+
+function updateDailyProgress() {
+    const tasks = appState.todayTasks;
+    const done = [tasks.words, tasks.grammar, tasks.quiz].filter(Boolean).length;
+    const pct = Math.round((done / 3) * 100);
+    document.getElementById('dailyPercent').textContent = pct + '%';
+    const circumference = 2 * Math.PI * 62; // r=62
+    const offset = circumference - (done / 3) * circumference;
+    document.getElementById('dailyProgressRing').setAttribute('stroke-dashoffset', offset);
+}
+
+function updateWeeklyStats() {
+    const weekStart = getWeekStart(new Date());
+    const weekLearned = appState.learnedWords.filter(wi => {
+        // Approximate: just count total learned
+        return true;
+    }).length;
+
+    document.getElementById('weekWords').textContent = appState.learnedWords.length;
+    const accuracy = appState.totalQuestions > 0
+        ? Math.round((appState.totalCorrect / appState.totalQuestions) * 100)
+        : 0;
+    document.getElementById('weekAccuracy').textContent = accuracy + '%';
+    document.getElementById('totalMinutes').textContent = Math.round(appState.totalMinutes);
+
+    const mastered = appState.masteredWords.length;
+    document.getElementById('masteredCount').textContent = mastered;
+}
+
+function updateStreakDisplay() {
+    document.getElementById('streakDays').textContent = appState.streak;
+}
+
+function getWeekStart(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    d.setDate(diff);
+    d.setHours(0,0,0,0);
+    return d;
+}
+
+// ============================================================
+// DAILY CHECK-IN & STREAK LOGIC
+// ============================================================
+
+function getTodayStr() {
+    const d = new Date();
+    return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+}
+
+function checkAndResetDaily() {
+    const today = getTodayStr();
+    const lastVisit = appState.lastVisitDate;
+
+    if (lastVisit !== today) {
+        // New day - check streak
+        if (lastVisit) {
+            const last = new Date(lastVisit);
+            const curr = new Date(today);
+            const diffMs = curr - last;
+            const diffDays = Math.round(diffMs / (1000*60*60*24));
+
+            if (diffDays === 1) {
+                // Consecutive day - streak continues
+                appState.streak = (appState.streak || 0) + 1;
+            } else if (diffDays > 1) {
+                // Streak broken
+                appState.streak = 1;
+            }
+        } else {
+            appState.streak = 1;
+        }
+
+        // Reset daily tasks
+        appState.todayTasks = { words: false, grammar: false, quiz: false };
+        appState.lastVisitDate = today;
+
+        // Advance word index for today
+        appState.todayWordIndex = appState.learnedWords.length;
+
+        saveState(appState);
+    }
+}
+
+function doCheckin() {
+    const today = getTodayStr();
+    if (!appState.checkins.includes(today)) {
+        appState.checkins.push(today);
+        saveState(appState);
+    }
+}
+
+// ============================================================
+// WORD LEARNING
+// ============================================================
+
+let currentWordBatch = [];
+let currentWordIndex = 0;
+const WORDS_PER_DAY = 10;
+
+function startWordLearning() {
+    switchPage('word-learning');
+    prepareWordBatch();
+    showCurrentWord();
+    // Start timer
+    if (!appState.startTime) appState.startTime = Date.now();
+}
+
+function prepareWordBatch() {
+    const startIndex = appState.todayWordIndex || 0;
+    currentWordBatch = [];
+    for (let i = 0; i < WORDS_PER_DAY; i++) {
+        const idx = (startIndex + i) % BASIC_WORDS.length;
+        currentWordBatch.push({ dataIndex: idx, word: BASIC_WORDS[idx] });
+    }
+    currentWordIndex = 0;
+}
+
+function showCurrentWord() {
+    if (currentWordIndex >= currentWordBatch.length) {
+        finishWordLearning();
+        return;
+    }
+
+    const item = currentWordBatch[currentWordIndex];
+    const w = item.word;
+
+    const posLabels = {
+        noun: '名词', verb: '动词', adj: '形容词', adv: '副词',
+        pron: '代词', prep: '介词', conj: '连词', art: '冠词'
+    };
+
+    document.getElementById('wordCounter').textContent =
+        (currentWordIndex + 1) + '/' + currentWordBatch.length;
+
+    document.getElementById('wordCardDisplay').innerHTML = `
+        <div class="word-main">${w.word}</div>
+        <div class="word-phonetic">${w.phonetic}</div>
+        <div class="word-pos">${posLabels[w.pos] || w.pos}</div>
+        <div class="word-meaning">${w.meaning}</div>
+        <div class="word-example"><strong>${w.word}</strong> ${w.example}</div>
+        <div class="word-nav">
+            <button class="word-nav-btn" onclick="prevWord()">◀ 上一个</button>
+            <button class="word-nav-btn primary" onclick="markWordLearned()">记住了 ✓</button>
+            <button class="word-nav-btn" onclick="nextWord()">下一个 ▶</button>
+        </div>
+    `;
+
+    const progress = ((currentWordIndex) / currentWordBatch.length) * 100;
+    document.getElementById('wordProgressBar').style.width = progress + '%';
+}
+
+function nextWord() {
+    if (currentWordIndex < currentWordBatch.length - 1) {
+        currentWordIndex++;
+        showCurrentWord();
+    } else {
+        finishWordLearning();
+    }
+}
+
+function prevWord() {
+    if (currentWordIndex > 0) {
+        currentWordIndex--;
+        showCurrentWord();
+    }
+}
+
+function markWordLearned() {
+    const item = currentWordBatch[currentWordIndex];
+    const idx = item.dataIndex;
+
+    if (!appState.learnedWords.includes(idx)) {
+        appState.learnedWords.push(idx);
+    }
+
+    // Set initial mastery
+    if (!appState.wordMastery[idx]) {
+        appState.wordMastery[idx] = 1;
+    } else if (appState.wordMastery[idx] < 3) {
+        appState.wordMastery[idx]++;
+    }
+
+    // Check for master
+    if (appState.wordMastery[idx] >= 3 && !appState.masteredWords.includes(idx)) {
+        appState.masteredWords.push(idx);
+    }
+
+    appState.todayTasks.words = true;
+    saveState(appState);
+    nextWord();
+}
+
+function finishWordLearning() {
+    document.getElementById('wordProgressBar').style.width = '100%';
+    appState.todayTasks.words = true;
+    saveState(appState);
+
+    // Track time
+    if (appState.startTime) {
+        const elapsed = (Date.now() - appState.startTime) / 60000;
+        appState.totalMinutes += elapsed;
+        appState.startTime = Date.now(); // reset for next activity
+        saveState(appState);
+    }
+
+    showToast('单词学习完成！继续加油！');
+    checkAchievements();
+    setTimeout(() => switchPage('home'), 1000);
+}
+
+// ============================================================
+// GRAMMAR TIP
+// ============================================================
+
+function showGrammarTip() {
+    // Pick a rule not yet seen or rotate
+    let ruleIndex;
+    if (appState.grammarRulesSeen.length >= GRAMMAR_RULES.length) {
+        // All seen, pick random
+        ruleIndex = Math.floor(Math.random() * GRAMMAR_RULES.length);
+    } else {
+        // Pick next unseen
+        const unseen = [];
+        for (let i = 0; i < GRAMMAR_RULES.length; i++) {
+            if (!appState.grammarRulesSeen.includes(i)) unseen.push(i);
+        }
+        ruleIndex = unseen[0];
+    }
+
+    const rule = GRAMMAR_RULES[ruleIndex];
+
+    if (!appState.grammarRulesSeen.includes(ruleIndex)) {
+        appState.grammarRulesSeen.push(ruleIndex);
+    }
+    appState.todayTasks.grammar = true;
+    saveState(appState);
+
+    showModal(
+        '📐',
+        '语法规则 #' + rule.num,
+        '<div style="text-align:left;padding:0 10px;">' +
+        '<p style="font-weight:700;margin-bottom:8px;">' + rule.title + '</p>' +
+        '<p style="font-size:14px;color:#636E72;line-height:1.7;margin-bottom:12px;">' + rule.desc + '</p>' +
+        '<div style="background:#FFFBEB;padding:12px;border-radius:8px;">' +
+        '<div style="color:#E67E22;font-weight:600;font-size:12px;margin-bottom:6px;">示例：</div>' +
+        rule.examples.map(ex => '<div style="font-size:13px;padding:2px 0;">• ' + ex + '</div>').join('') +
+        '</div></div>'
+    );
+
+    checkAchievements();
+}
+
+// ============================================================
+// QUIZ SYSTEM
+// ============================================================
+
+let quizQuestions = [];
+let currentQuizIndex = 0;
+let quizCorrect = 0;
+const QUIZ_COUNT = 5;
+
+function startQuiz() {
+    switchPage('quiz');
+    generateQuizQuestions();
+    currentQuizIndex = 0;
+    quizCorrect = 0;
+    renderQuizProgress();
+    showQuizQuestion();
+}
+
+function generateQuizQuestions() {
+    quizQuestions = [];
+    const usedIndices = new Set();
+
+    // Mix question types
+    for (let i = 0; i < QUIZ_COUNT; i++) {
+        let idx;
+        do {
+            idx = Math.floor(Math.random() * BASIC_WORDS.length);
+        } while (usedIndices.has(idx) && usedIndices.size < BASIC_WORDS.length);
+        usedIndices.add(idx);
+
+        const w = BASIC_WORDS[idx];
+        const type = Math.random();
+
+        if (type < 0.5) {
+            // Word -> Meaning
+            const options = generateOptions(w, 'meaning');
+            quizQuestions.push({
+                type: 'word_to_meaning',
+                word: w,
+                question: '"' + w.word + '" 是什么意思？',
+                correctAnswer: w.meaning,
+                options: options
+            });
+        } else {
+            // Meaning -> Word
+            const options = generateOptions(w, 'word');
+            quizQuestions.push({
+                type: 'meaning_to_word',
+                word: w,
+                question: '哪个单词表示 "' + w.meaning + '"？',
+                correctAnswer: w.word,
+                options: options
+            });
+        }
+    }
+}
+
+function generateOptions(correctWord, mode) {
+    const options = new Set();
+    const correctVal = mode === 'meaning' ? correctWord.meaning : correctWord.word;
+    options.add(correctVal);
+
+    while (options.size < 4) {
+        const randIdx = Math.floor(Math.random() * BASIC_WORDS.length);
+        const val = mode === 'meaning' ? BASIC_WORDS[randIdx].meaning : BASIC_WORDS[randIdx].word;
+        if (val !== correctVal) options.add(val);
+    }
+
+    return Array.from(options).sort(() => Math.random() - 0.5);
+}
+
+function renderQuizProgress() {
+    const container = document.getElementById('quizProgress');
+    container.innerHTML = quizQuestions.map((_, i) =>
+        '<div class="quiz-dot" id="quizDot' + i + '"></div>'
+    ).join('');
+}
+
+function showQuizQuestion() {
+    if (currentQuizIndex >= quizQuestions.length) {
+        showQuizResult();
+        return;
+    }
+
+    const q = quizQuestions[currentQuizIndex];
+    const dot = document.getElementById('quizDot' + currentQuizIndex);
+    if (dot) dot.classList.add('active');
+
+    const html = `
+        <div class="quiz-question">${q.question}</div>
+        ${q.type === 'word_to_meaning' ? '<div class="quiz-word-hint">' + q.word.word + '</div>' : ''}
+        <ul class="quiz-options">
+            ${q.options.map((opt, i) =>
+                '<li class="quiz-option" onclick="selectQuizAnswer(this, ' +
+                JSON.stringify(opt).replace(/"/g, '&quot;') + ')">' + opt + '</li>'
+            ).join('')}
+        </ul>
+    `;
+
+    document.getElementById('quizContent').innerHTML = html;
+}
+
+function selectQuizAnswer(element, answer) {
+    // Prevent re-selection
+    const options = element.parentElement.querySelectorAll('.quiz-option');
+    options.forEach(opt => {
+        opt.style.pointerEvents = 'none';
+    });
+
+    const q = quizQuestions[currentQuizIndex];
+    const isCorrect = answer === q.correctAnswer;
+
+    element.classList.add(isCorrect ? 'correct' : 'wrong');
+
+    if (!isCorrect) {
+        // Show correct answer
+        options.forEach(opt => {
+            if (opt.textContent.trim() === q.correctAnswer) {
+                opt.classList.add('correct');
+            }
+        });
+    } else {
+        quizCorrect++;
+    }
+
+    // Update stats
+    appState.totalQuestions++;
+    if (isCorrect) appState.totalCorrect++;
+
+    // Mark dot
+    const dot = document.getElementById('quizDot' + currentQuizIndex);
+    if (dot) {
+        dot.classList.remove('active');
+        dot.classList.add(isCorrect ? 'correct' : 'wrong');
+    }
+
+    // Auto advance after delay
+    setTimeout(() => {
+        currentQuizIndex++;
+        showQuizQuestion();
+    }, 1200);
+}
+
+function showQuizResult() {
+    const score = Math.round((quizCorrect / QUIZ_COUNT) * 100);
+    const isPerfect = score === 100;
+    const isGood = score >= 60;
+
+    appState.quizzesTaken = (appState.quizzesTaken || 0) + 1;
+    appState.totalQuizzes = (appState.totalQuizzes || 0) + 1;
+    if (isPerfect) appState.perfectScores = (appState.perfectScores || 0) + 1;
+    appState.todayTasks.quiz = true;
+
+    // Track time
+    if (appState.startTime) {
+        const elapsed = (Date.now() - appState.startTime) / 60000;
+        appState.totalMinutes += elapsed;
+        appState.startTime = null;
+    }
+
+    doCheckin();
+    saveState(appState);
+
+    let msg, cls;
+    if (isPerfect) { msg = '完美表现！全部答对！'; cls = 'perfect'; }
+    else if (isGood) { msg = '不错的成绩，继续保持！'; cls = 'good'; }
+    else { msg = '还需努力，多复习一下吧！'; cls = 'poor'; }
+
+    document.getElementById('quizContent').innerHTML = `
+        <div class="quiz-result">
+            <div class="result-score ${cls}">${score}</div>
+            <div class="result-msg">${msg}</div>
+            <div style="font-size:14px;color:#636E72;">
+                答对 ${quizCorrect}/${QUIZ_COUNT} 题
+            </div>
+            <button class="start-btn" style="margin-top:20px;" onclick="switchPage('home')">返回首页</button>
+        </div>
+    `;
+
+    if (isPerfect) {
+        fireConfetti();
+    }
+
+    checkAchievements();
+}
+
+// ============================================================
+// START DAILY LEARNING (full flow)
+// ============================================================
+
+function startDailyLearning() {
+    appState.startTime = Date.now();
+    saveState(appState);
+    startWordLearning();
+}
+
+// ============================================================
+// VOCABULARY / WORD BOOK PAGE
+// ============================================================
+
+let currentPosFilter = 'all';
+
+function renderWordBook() {
+    const search = (document.getElementById('wordSearch')?.value || '').toLowerCase();
+    const container = document.getElementById('wordBookList');
+    const filter = currentPosFilter;
+
+    let filtered = BASIC_WORDS.map((w, i) => ({ ...w, originalIndex: i }));
+
+    if (filter !== 'all') {
+        filtered = filtered.filter(w => w.pos === filter);
+    }
+    if (search) {
+        filtered = filtered.filter(w =>
+            w.word.toLowerCase().includes(search) ||
+            w.meaning.includes(search)
+        );
+    }
+
+    document.getElementById('masteredInBook').textContent = appState.masteredWords.length;
+
+    container.innerHTML = filtered.map(w => {
+        const mastered = appState.masteredWords.includes(w.originalIndex);
+        const masteryLevel = appState.wordMastery[w.originalIndex] || 0;
+        const posClass = w.pos;
+
+        return `<li class="word-book-item">
+            <span class="wb-word">${w.word}</span>
+            <span class="wb-pos ${posClass}">${w.pos.toUpperCase()}</span>
+            <span class="wb-meaning">${w.meaning}</span>
+            <span class="wb-mastered">${mastered ? '★' : (masteryLevel > 0 ? '☆' : '')}</span>
+        </li>`;
+    }).join('');
+
+    document.getElementById('totalVocabCount').textContent = filtered.length;
+}
+
+function filterWordBook() {
+    renderWordBook();
+}
+
+// POS Filter tabs
+document.getElementById('posFilters')?.addEventListener('click', (e) => {
+    if (e.target.classList.contains('filter-tab')) {
+        document.querySelectorAll('#posFilters .filter-tab').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        currentPosFilter = e.target.dataset.pos;
+        renderWordBook();
+    }
+});
+
+// ============================================================
+// GRAMMAR RULES PAGE
+// ============================================================
+
+function renderGrammarRules() {
+    const container = document.getElementById('grammarRulesList');
+    container.innerHTML = GRAMMAR_RULES.map(rule => `
+        <div class="grammar-rule-card">
+            <div class="grammar-rule-num">${rule.num}</div>
+            <div class="grammar-rule-title">${rule.title}</div>
+            <div class="grammar-rule-desc">${rule.desc}</div>
+            <div class="grammar-example">
+                <div class="eg-label">示例</div>
+                ${rule.examples.map(ex => '<div>• ' + ex + '</div>').join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================================
+// STATS PAGE
+// ============================================================
+
+function renderStats() {
+    renderCalendar();
+    renderStatNumbers();
+    renderMasteryChart();
+}
+
+function renderCalendar() {
+    const container = document.getElementById('checkinCalendar');
+    const today = new Date();
+    const todayStr = getTodayStr();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    // Get first day of month and total days
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const dayNames = ['日','一','二','三','四','五','六'];
+    let html = dayNames.map(d => '<div class="calendar-day header">' + d + '</div>').join('');
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+        html += '<div class="calendar-day empty"></div>';
+    }
+
+    // Days of month
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateStr = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+        const isChecked = appState.checkins.includes(dateStr);
+        const isToday = dateStr === todayStr;
+        let cls = 'calendar-day';
+        if (isChecked) cls += ' checked';
+        if (isToday) cls += ' today';
+        html += `<div class="${cls}">${d}</div>`;
+    }
+
+    container.innerHTML = html;
+}
+
+function renderStatNumbers() {
+    document.getElementById('statTotalDays').textContent = appState.checkins.length || (appState.streak > 0 ? appState.streak : 0);
+    document.getElementById('statTotalWords').textContent = appState.learnedWords.length;
+    document.getElementById('statTotalQuizzes').textContent = appState.totalQuizzes || 0;
+    const avgScore = appState.totalQuestions > 0
+        ? Math.round((appState.totalCorrect / appState.totalQuestions) * 100)
+        : 0;
+    document.getElementById('statAvgScore').textContent = avgScore + '%';
+}
+
+function renderMasteryChart() {
+    const container = document.getElementById('masteryChart');
+    const total = BASIC_WORDS.length;
+    const mastered = appState.masteredWords.length;
+    const learning = appState.learnedWords.length - mastered;
+    const untouched = total - appState.learnedWords.length;
+
+    const pctMastered = Math.round((mastered / total) * 100);
+    const pctLearning = Math.round((learning / total) * 100);
+    const pctUntouched = 100 - pctMastered - pctLearning;
+
+    container.innerHTML = `
+        <div style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-size:13px;">🧠 已掌握 <strong>${mastered}</strong> (${pctMastered}%)</span>
+            </div>
+            <div style="height:20px;background:#eee;border-radius:10px;overflow:hidden;">
+                <div style="height:100%;width:${pctMastered}%;background:linear-gradient(90deg,#51CF66,#37B24D);border-radius:10px;transition:width 0.5s;"></div>
+            </div>
+        </div>
+        <div style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-size:13px;">📖 学习中 <strong>${learning}</strong> (${pctLearning}%)</span>
+            </div>
+            <div style="height:20px;background:#eee;border-radius:10px;overflow:hidden;">
+                <div style="height:100%;width:${pctLearning}%;background:linear-gradient(90deg,#4A90D9,#357ABD);border-radius:10px;transition:width 0.5s;"></div>
+            </div>
+        </div>
+        <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-size:13px;">⚪ 未开始 <strong>${untouched}</strong> (${pctUntouched}%)</span>
+            </div>
+            <div style="height:20px;background:#eee;border-radius:10px;overflow:hidden;">
+                <div style="height:100%;width:${pctUntouched}%;background:#DFE6E9;border-radius:10px;transition:width 0.5s;"></div>
+            </div>
+        </div>
+    `;
+}
+
+// ============================================================
+// ACHIEVEMENTS PAGE
+// ============================================================
+
+function renderAchievements() {
+    const container = document.getElementById('achievementGrid');
+    const stats = {
+        totalDays: appState.checkins.length,
+        streak: appState.streak,
+        learnedWords: appState.learnedWords.length,
+        masteredWords: appState.masteredWords.length,
+        totalQuizzes: appState.totalQuizzes || 0,
+        perfectScores: appState.perfectScores || 0,
+        totalMinutes: Math.round(appState.totalMinutes),
+        grammarRulesSeen: appState.grammarRulesSeen.length,
+    };
+
+    container.innerHTML = ACHIEVEMENTS.map(a => {
+        const unlocked = a.condition(stats);
+        const cls = unlocked ? 'unlocked' : 'locked';
+        return `<div class="achievement-item ${cls}">
+            <div class="achievement-icon">${unlocked ? a.icon : '🔒'}</div>
+            <div class="achievement-name">${a.name}</div>
+            <div class="achievement-desc">${a.desc}</div>
+        </div>`;
+    }).join('');
+}
+
+function checkAchievements() {
+    const stats = {
+        totalDays: appState.checkins.length,
+        streak: appState.streak,
+        learnedWords: appState.learnedWords.length,
+        masteredWords: appState.masteredWords.length,
+        totalQuizzes: appState.totalQuizzes || 0,
+        perfectScores: appState.perfectScores || 0,
+        totalMinutes: Math.round(appState.totalMinutes),
+        grammarRulesSeen: appState.grammarRulesSeen.length,
+    };
+
+    const newlyUnlocked = [];
+
+    ACHIEVEMENTS.forEach(a => {
+        const unlocked = a.condition(stats);
+        if (unlocked && !appState.achievements.includes(a.id)) {
+            appState.achievements.push(a.id);
+            newlyUnlocked.push(a);
+        }
+    });
+
+    if (newlyUnlocked.length > 0) {
+        saveState(appState);
+        // Show achievement notification for the first new one
+        const ach = newlyUnlocked[0];
+        setTimeout(() => {
+            showModal(ach.icon, '成就解锁！', `恭喜你获得「${ach.name}」成就！<br><br>${ach.desc}`);
+            fireConfetti();
+        }, 500);
+    }
+}
+
+// ============================================================
+// MODAL / TOAST / CONFETTI
+// ============================================================
+
+function showModal(icon, title, desc) {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalDesc').innerHTML = desc;
+    document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(event) {
+    if (!event || event.target === document.getElementById('modalOverlay')) {
+        document.getElementById('modalOverlay').classList.remove('show');
+    }
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function fireConfetti() {
+    const container = document.getElementById('confettiContainer');
+    container.innerHTML = '';
+    const colors = ['#4A90D9','#FF6B6B','#51CF66','#FFD43B','#9B59B6','#E67E22'];
+
+    for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        piece.style.width = (Math.random() * 8 + 5) + 'px';
+        piece.style.height = (Math.random() * 8 + 5) + 'px';
+        container.appendChild(piece);
+    }
+
+    setTimeout(() => { container.innerHTML = ''; }, 2500);
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+function init() {
+    checkAndResetDaily();
+    updateHomeUI();
+    renderWordBook();
+}
+
+// Run on load
+init();
+
+</script>
+</body>
+</html>
